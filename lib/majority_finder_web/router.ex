@@ -20,6 +20,7 @@ defmodule MajorityFinderWeb.Router do
     live "/", PageLive, :index
     live("/vote", Voter)
     live("/results", Results)
+    live("/host", Host)
   end
 
   # Other scopes may use custom stacks.

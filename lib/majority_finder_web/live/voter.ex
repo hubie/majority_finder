@@ -1,7 +1,7 @@
 defmodule MajorityFinderWeb.Voter do
   use Phoenix.LiveView
 
-  @results "results"
+  alias MajorityFinderWeb.Host
 
   @topic inspect(__MODULE__)
 
@@ -10,35 +10,38 @@ defmodule MajorityFinderWeb.Voter do
   end
 
   def mount(_params, _session, socket) do
-    MajorityFinderWeb.Endpoint.subscribe(@results) # subscribe to the channel
+    if connected?(socket), do: MajorityFinderWeb.Host.subscribe()
     {:ok, assign(socket, :state, %{answer: :undef})}
   end
 
-  def handle_event("yes", _, socket) do
-    new_state = update(socket, :state, &(Map.put(&1,:answer,:yes)))
-    Phoenix.PubSub.broadcast(MajorityFinder.PubSub, @topic, {__MODULE__, %{vote: :yes}})
-
+  def handle_info({Host, :close}, state) do
+    new_state = update(state, :state, &(Map.put(&1, :answer, :undef)))
+      |> update(:state, &(Map.put(&1, :question, %{})))
     {:noreply, new_state}
   end
 
-  def handle_event("no", _, socket) do
-    new_state = update(socket, :state, &(Map.put(&1,:answer,:no)))
-    Phoenix.PubSub.broadcast(MajorityFinder.PubSub, @topic, {__MODULE__, %{vote: :no}})
+  def handle_info({Host, %{new_question: question}}, state) do
+    {:noreply, update(state, :state, &(Map.put(&1, :question, question)))}
+  end
+
+  def handle_event("submitAnswer", value, socket) do
+    new_state = update(socket, :state, &(Map.put(&1,:answer,:yes)))
+    Phoenix.PubSub.broadcast(MajorityFinder.PubSub, @topic, {__MODULE__, %{vote: String.to_atom(value["value"])}})
 
     {:noreply, new_state}
   end
 
   def handle_event(:vote_submitted, _, socket) do
-    inspect socket
     {:noreply, socket}
   end
 
   def render(assigns) do
     ~L"""
     <div>
-      <h1>Last Answer is: <%= @state.answer %></h1>
-      <button phx-click="yes">Yes</button>
-      <button phx-click="no">No</button>
+      <h1><%= get_in(@state, [:question, :question]) || "Waiting for a question..." %></h1>
+      <%= for answers <- get_in(@state, [:question, :answers]) || [] do %>
+        <button phx-click="submitAnswer" value="<%= answers %>"><%= answers %></button>
+      <% end %>
     </div>
     """
   end
