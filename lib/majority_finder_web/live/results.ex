@@ -24,14 +24,6 @@ defmodule MajorityFinderWeb.Results do
     {:noreply, update(state, :state, &(Map.put(&1, :results, results)))}
   end
 
-  def handle_info({@topic, %{vote: vote}}, state) do
-    current_value = Map.get(state.assigns.state.results, vote, 0)
-    new_state = update(state, :state, &(put_in(&1,[:results, vote], current_value + 1)))
-
-    Phoenix.PubSub.broadcast(MajorityFinder.PubSub, @topic, {__MODULE__, %{results: new_state.assigns.state.results}})
-
-    {:noreply, new_state}
-  end
 
   def render(assigns) do
     ~L"""

@@ -37,15 +37,10 @@ defmodule MajorityFinderWeb.Voter do
 
   def handle_event("submitAnswer", %{"value"=> value}, socket) do
     vote = String.to_atom(value)
-    new_state = update(socket, :state, &(Map.put(&1,:answer,vote)))
     Results.vote_cast(vote)
-
-    {:noreply, new_state}
+    {:noreply, update(socket, :state, &(Map.put(&1,:answer,vote)))}
   end
 
-  def handle_event(:vote_submitted, _, socket) do
-    {:noreply, socket}
-  end
 
   def render(assigns) do
     ~L"""

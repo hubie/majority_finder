@@ -40,7 +40,6 @@ defmodule MajorityFinder.Results do
     broadcast_question(new_question)
     broadcast_results(clean_results)
     {:noreply, %{state | results: clean_results, question: new_question}}
-    # {:noreply, Map.put(state, :results, clean_results)}
   end
 
   @impl true

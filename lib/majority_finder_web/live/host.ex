@@ -5,12 +5,10 @@ defmodule MajorityFinderWeb.Host do
 
   @topic inspect(__MODULE__)
   @resultsTopic "results"
-  @questionsTopic "questions"
 
   def subscribe do
     Phoenix.PubSub.subscribe(MajorityFinder.PubSub, @topic)
     Phoenix.PubSub.subscribe(MajorityFinder.PubSub, @resultsTopic)
-    Phoenix.PubSub.subscribe(MajorityFinder.PubSub, @questionsTopic)
   end
 
   def mount(_params, _session, socket) do
@@ -27,12 +25,6 @@ defmodule MajorityFinderWeb.Host do
     {:noreply, update(state, :state, &(Map.put(&1, :question, question)))}
   end
 
-  def handle_info({Results, :voting_closed}, state) do
-    new_state = update(state, :state, &(Map.put(&1, :answer, nil)))
-      |> update(:state, &(Map.put(&1, :question, %{})))
-    {:noreply, new_state}
-  end
-
 
   def handle_event("submit_question", _, socket) do
     Results.new_question(fetch_question(:something))
@@ -40,7 +32,7 @@ defmodule MajorityFinderWeb.Host do
   end
 
 
-  def fetch_question(_which_question) do
+  defp fetch_question(_which_question) do
     %{ question: "Do you like it?",
       answers: [:yes, :no, :maybe],
     }
