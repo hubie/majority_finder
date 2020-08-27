@@ -1,32 +1,44 @@
 defmodule MajorityFinderWeb.Voter do
   use Phoenix.LiveView
 
-  alias MajorityFinderWeb.Host
+  alias MajorityFinder.Results
 
   @topic inspect(__MODULE__)
+  @questionTopic "questions"
 
   def subscribe do
     Phoenix.PubSub.subscribe(MajorityFinder.PubSub, @topic)
+    Phoenix.PubSub.subscribe(MajorityFinder.PubSub, @questionTopic)
   end
+
+  @initial_store %{
+    answer: nil,
+    question: %{},
+  }
 
   def mount(_params, _session, socket) do
-    if connected?(socket), do: MajorityFinderWeb.Host.subscribe()
-    {:ok, assign(socket, :state, %{answer: :undef})}
+    if connected?(socket), do: subscribe()
+
+    state = Map.put(@initial_store, :question, Results.get_current_question())
+
+    {:ok, assign(socket, :state, state)}
   end
 
-  def handle_info({Host, :close}, state) do
-    new_state = update(state, :state, &(Map.put(&1, :answer, :undef)))
+  def handle_info({Results, :voting_closed}, state) do
+    new_state = update(state, :state, &(Map.put(&1, :answer, nil)))
       |> update(:state, &(Map.put(&1, :question, %{})))
     {:noreply, new_state}
   end
 
-  def handle_info({Host, %{new_question: question}}, state) do
+  def handle_info({Results, %{new_question: question}}, state) do
     {:noreply, update(state, :state, &(Map.put(&1, :question, question)))}
   end
 
-  def handle_event("submitAnswer", value, socket) do
-    new_state = update(socket, :state, &(Map.put(&1,:answer,:yes)))
-    Phoenix.PubSub.broadcast(MajorityFinder.PubSub, @topic, {__MODULE__, %{vote: String.to_atom(value["value"])}})
+
+  def handle_event("submitAnswer", %{"value"=> value}, socket) do
+    vote = String.to_atom(value)
+    new_state = update(socket, :state, &(Map.put(&1,:answer,vote)))
+    Results.vote_cast(vote)
 
     {:noreply, new_state}
   end

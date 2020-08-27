@@ -1,35 +1,44 @@
 defmodule MajorityFinderWeb.Host do
   use Phoenix.LiveView
 
-  alias MajorityFinderWeb.Results
-  alias MajorityFinderWeb.Voter
+  alias MajorityFinder.Results
 
   @topic inspect(__MODULE__)
+  @resultsTopic "results"
+  @questionsTopic "questions"
 
   def subscribe do
     Phoenix.PubSub.subscribe(MajorityFinder.PubSub, @topic)
+    Phoenix.PubSub.subscribe(MajorityFinder.PubSub, @resultsTopic)
+    Phoenix.PubSub.subscribe(MajorityFinder.PubSub, @questionsTopic)
   end
 
   def mount(_params, _session, socket) do
-    if connected?(socket), do: MajorityFinderWeb.Results.subscribe()
-    # if connected?(socket), do: MajorityFinderWeb.Voter.subscribe()
-    {:ok, assign(socket, :state, %{results: %{}})}
+    if connected?(socket), do: subscribe()
+    results = Results.get_current_results()
+    {:ok, assign(socket, :state, %{results: results})}
   end
-
 
   def handle_info({Results, %{results: results}}, state) do
-    new_state = update(state, :state, &(Map.put(&1, :results, results)))
-    {:noreply, new_state}
+    {:noreply, update(state, :state, &(Map.put(&1, :results, results)))}
   end
 
+  def handle_info({Results, %{new_question: question}}, state) do
+    {:noreply, update(state, :state, &(Map.put(&1, :question, question)))}
+  end
+
+  def handle_info({Results, :voting_closed}, state) do
+    new_state = update(state, :state, &(Map.put(&1, :answer, nil)))
+      |> update(:state, &(Map.put(&1, :question, %{})))
+    {:noreply, new_state}
+  end
 
 
   def handle_event("submit_question", _, socket) do
-    Phoenix.PubSub.broadcast(MajorityFinder.PubSub, @topic, {__MODULE__, %{new_question: fetch_question(:something)}})
-    new_state = update(socket, :state, &Map.put(&1, :question_state, :open))
-
-    {:noreply, new_state}
+    Results.new_question(fetch_question(:something))
+    {:noreply, socket}
   end
+
 
   def fetch_question(_which_question) do
     %{ question: "Do you like it?",
@@ -42,7 +51,7 @@ defmodule MajorityFinderWeb.Host do
     new_state = update(socket, :state, &(Map.put(&1, :results, %{})))
     new_state2 = update(new_state, :state, &(Map.put(&1, :question_state, :closed)))
 
-    Phoenix.PubSub.broadcast(MajorityFinder.PubSub, @topic, {__MODULE__, :close})
+    Results.reset_results()
 
     {:noreply, new_state2}
   end

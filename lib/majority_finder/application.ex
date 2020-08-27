@@ -12,9 +12,9 @@ defmodule MajorityFinder.Application do
       # Start the PubSub system
       {Phoenix.PubSub, name: MajorityFinder.PubSub},
       # Start the Endpoint (http/https)
-      MajorityFinderWeb.Endpoint
+      MajorityFinderWeb.Endpoint,
       # Start a worker by calling: MajorityFinder.Worker.start_link(arg)
-      # {MajorityFinder.Worker, arg}
+      {MajorityFinder.Results, [name: MajorityFinder.Results]},
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
