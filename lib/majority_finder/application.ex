@@ -14,7 +14,9 @@ defmodule MajorityFinder.Application do
       # Start the Endpoint (http/https)
       MajorityFinderWeb.Endpoint,
       # Start a worker by calling: MajorityFinder.Worker.start_link(arg)
+      MajorityFinder.Presence,
       {MajorityFinder.Results, [name: MajorityFinder.Results]},
+      {MajorityFinder.Metrics, [name: MajorityFinder.Metrics]}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
