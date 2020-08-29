@@ -29,9 +29,7 @@ defmodule MajorityFinder.Metrics do
         %{event: "presence_diff", payload: %{joins: joins, leaves: leaves}},
         %{online_voter_count: count} = socket
       ) do
-    IO.inspect(socket)
     user_count = count + map_size(joins) - map_size(leaves)
-    IO.inspect(["COUNT: ", count, map_size(joins), map_size(leaves)])
 
     Results.update_user_count(user_count)
     {:noreply, %{socket | online_voter_count: user_count}}

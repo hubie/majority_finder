@@ -31,7 +31,6 @@ defmodule MajorityFinderWeb.Host do
   end
 
   def handle_info({Results, %{online_voters: user_count}}, state) do
-    IO.inspect(["GOT UPDATE: ", user_count])
     {:noreply, update(state, :state, &Map.put(&1, :online_voters, user_count))}
   end
 
