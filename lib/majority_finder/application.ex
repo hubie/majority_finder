@@ -19,6 +19,8 @@ defmodule MajorityFinder.Application do
       {MajorityFinder.Metrics, [name: MajorityFinder.Metrics]}
     ]
 
+    :ets.new(:auth_table, [:set, :public, :named_table, read_concurrency: true])
+
     # See https://hexdocs.pm/elixir/Supervisor.html
     # for other strategies and supported options
     opts = [strategy: :one_for_one, name: MajorityFinder.Supervisor]

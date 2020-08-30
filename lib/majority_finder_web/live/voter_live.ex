@@ -1,4 +1,4 @@
-defmodule MajorityFinderWeb.Voter do
+defmodule MajorityFinderWeb.VoterLive do
   use Phoenix.LiveView
 
   alias MajorityFinder.Presence

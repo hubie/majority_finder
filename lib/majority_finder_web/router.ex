@@ -1,5 +1,7 @@
 defmodule MajorityFinderWeb.Router do
   use MajorityFinderWeb, :router
+  # alias MajorityFinderWeb.Session
+  import MajorityFinderWeb.Plug.Session, only: [redirect_unauthorized: 2, validate_session: 2]
 
   pipeline :browser do
     plug :accepts, ["html"]
@@ -8,6 +10,12 @@ defmodule MajorityFinderWeb.Router do
     plug :put_root_layout, {MajorityFinderWeb.LayoutView, :root}
     plug :protect_from_forgery
     plug :put_secure_browser_headers
+    plug :validate_session
+  end
+
+  pipeline :restricted do
+    plug :browser
+    plug :redirect_unauthorized
   end
 
   pipeline :api do
@@ -17,10 +25,19 @@ defmodule MajorityFinderWeb.Router do
   scope "/", MajorityFinderWeb do
     pipe_through :browser
 
+    live "/login", LoginLive, :index
+
     live "/", PageLive, :index
-    live("/vote", Voter)
+    # live("/vote", Voter)
     live("/results", Results)
     live("/host", Host)
+  end
+
+  scope "/vote", MajorityFinderWeb do
+    pipe_through :restricted
+
+    live "/", VoterLive, :index
+    # live("/", Voter)
   end
 
   # Other scopes may use custom stacks.
