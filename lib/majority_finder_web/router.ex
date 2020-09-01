@@ -15,7 +15,12 @@ defmodule MajorityFinderWeb.Router do
 
   pipeline :restricted do
     plug :browser
-    plug :redirect_unauthorized
+    plug :redirect_unauthorized, roles: [:admin, :voter]
+  end
+
+  pipeline :admin do
+    plug :browser
+    plug :redirect_unauthorized, roles: [:admin]
   end
 
   pipeline :api do
@@ -28,7 +33,10 @@ defmodule MajorityFinderWeb.Router do
     live "/login", LoginLive, :index
 
     live "/", PageLive, :index
-    # live("/vote", Voter)
+  end
+
+  scope "/", MajorityFinderWeb do
+    pipe_through :admin
     live("/results", Results)
     live("/host", Host)
   end
@@ -37,7 +45,6 @@ defmodule MajorityFinderWeb.Router do
     pipe_through :restricted
 
     live "/", VoterLive, :index
-    # live("/", Voter)
   end
 
   # Other scopes may use custom stacks.

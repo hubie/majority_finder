@@ -57,6 +57,11 @@ select {
   display: block;
 }
 
+input, select, textarea {
+  color: #eeeeee;
+  font-size: 24pt;
+}
+
 body {
   background-color: #000000;
   color: #e3e3e3;

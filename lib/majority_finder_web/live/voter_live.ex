@@ -19,10 +19,13 @@ defmodule MajorityFinderWeb.VoterLive do
     online_user_count: 0
   }
 
-  def mount(_params, _session, socket) do
+  def mount(_params, %{"session_uuid" => key}, socket) do
     if connected?(socket), do: subscribe()
 
-    state = Map.put(@initial_store, :question, Results.get_current_question())
+    state =
+      @initial_store
+      |> Map.put(:question, Results.get_current_question())
+      |> Map.put(:session_id, key)
 
     Presence.track(
       self(),

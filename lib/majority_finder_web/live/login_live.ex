@@ -4,9 +4,8 @@ defmodule MajorityFinderWeb.LoginLive do
   import MajorityFinderWeb.Live.Helper, only: [signing_salt: 0]
 
   alias MajorityFinder.User
-  alias MajorityFinderWeb.Login
-  alias MajorityFinderWeb.Router.Helpers, as: Routes
 
+  @impl true
   def render(assigns) do
     ~L"""
     <div>
@@ -14,7 +13,7 @@ defmodule MajorityFinderWeb.LoginLive do
         <fieldset class="flex flex-col md:w-full">
 
           <div>
-            <%= text_input f, :validation_code, [class: "text-white focus:border focus:border-b-0 rounded border", placeholder: "Enter your validation code", aria_required: "true"] %>
+            <%= text_input f, :validation_code, [class: "password-box text-white focus:border focus:border-b-0 rounded border", placeholder: "Enter your validation code", aria_required: "true"] %>
             <label for="form_email">Validation Code</label>
           </div>
           <%= submit "Login", [class: "w-full text-white bg-shop-green uppercase font-bold text-lg p-2 rounded"] %>
@@ -24,18 +23,21 @@ defmodule MajorityFinderWeb.LoginLive do
     """
   end
 
-  def mount(_params, %{"session_uuid" => key}, socket) do
+  @impl true
+  def mount(_params, %{"session_uuid" => key, "return_to" => return_to} = _session, socket) do
     current_user = %User{}
-
-    {:ok, assign(socket, key: key, current_user: current_user)}
+    {:ok, assign(socket, key: key, current_user: current_user, return_to: return_to)}
   end
 
   @impl true
-  def handle_event("save", %{"user" => %{"validation_code" => validation_code} = params}, socket) do
+  def handle_event(
+        "save",
+        %{"user" => %{"validation_code" => validation_code} = params},
+        socket
+      ) do
     if Map.get(params, "form_disabled", nil) != "true" do
-      IO.inspect(["params", params])
-
-      current_user = %User{validation_code: validation_code}
+      current_user =
+        MajorityFinder.Login.Form.get_user_by_code(%User{validation_code: validation_code})
 
       send(self(), {:disable_form, current_user})
 
@@ -46,14 +48,14 @@ defmodule MajorityFinderWeb.LoginLive do
   end
 
   @impl true
-  def handle_info({:disable_form, current_user}, %{assigns: %{:key => key}} = socket) do
-    IO.inspect(["current_user: ", current_user])
-
-    case MajorityFinder.Login.Form.get_user_by_code(current_user) do
+  def handle_info(
+        {:disable_form, current_user},
+        %{assigns: %{:key => key, :return_to => return_to}} = socket
+      ) do
+    case current_user do
       %User{id: user_id} ->
         insert_session_token(key, user_id)
-        path = Routes.voter_path(socket, :index)
-        redirect = socket |> redirect(to: path)
+        redirect = socket |> redirect(to: return_to)
         {:noreply, redirect}
 
       _ ->

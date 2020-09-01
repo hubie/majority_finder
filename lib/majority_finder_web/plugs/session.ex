@@ -2,9 +2,11 @@ defmodule MajorityFinderWeb.Plug.Session do
   import Plug.Conn, only: [get_session: 2, put_session: 3, halt: 1, assign: 3]
   import Phoenix.Controller, only: [redirect: 2]
 
-  def redirect_unauthorized(conn, _opts) do
+  def redirect_unauthorized(conn, opts) do
     user_id = Map.get(conn.assigns, :user_id)
+    user_role = Map.get(conn.assigns, :role)
 
+    #  || user_role not in opts[:roles]
     if user_id == nil do
       conn
       |> put_session(:return_to, conn.request_path)
