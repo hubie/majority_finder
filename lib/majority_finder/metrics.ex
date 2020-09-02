@@ -20,7 +20,7 @@ defmodule MajorityFinder.Metrics do
   end
 
   @impl true
-  def init(state) do
+  def init(_state) do
     subscribe()
     {:ok, @initial_state}
   end

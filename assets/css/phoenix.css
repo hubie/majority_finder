@@ -57,6 +57,19 @@ select {
   display: block;
 }
 
+.host.question-select {
+  height: 24rem;
+}
+
+.host.open-question.live-results {
+  border-style: solid;
+  border-color: #333333;
+}
+
+.host.open-question {
+  color: #666666;
+}
+
 input, select, textarea {
   color: #eeeeee;
   font-size: 24pt;

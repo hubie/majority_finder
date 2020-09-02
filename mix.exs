@@ -42,7 +42,7 @@ defmodule MajorityFinder.MixProject do
       {:telemetry_metrics, "~> 0.5"},
       {:telemetry_poller, "~> 0.5"},
       {:gettext, "~> 0.11"},
-      {:jason, "~> 1.0"},
+      {:jason, "~> 1.2"},
       {:plug_cowboy, "~> 2.0"},
       {:elixir_uuid, "~> 1.2"},
       {:bodyguard, "~> 2.4"}

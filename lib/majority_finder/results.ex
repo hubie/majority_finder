@@ -16,7 +16,7 @@ defmodule MajorityFinder.Results do
   end
 
   @impl true
-  def init(state) do
+  def init(_state) do
     {:ok, @initial_state}
   end
 
@@ -37,7 +37,7 @@ defmodule MajorityFinder.Results do
 
   @impl true
   def handle_cast(
-        %{new_question: %{question: question, answers: possible_answers} = new_question},
+        %{new_question: %{question: _question, answers: possible_answers} = new_question},
         state
       ) do
     clean_results = Map.new(possible_answers, fn a -> {a, 0} end)
