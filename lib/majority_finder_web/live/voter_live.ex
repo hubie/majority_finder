@@ -52,7 +52,13 @@ defmodule MajorityFinderWeb.VoterLive do
   def handle_event("submitAnswer", %{"value" => value}, socket) do
     vote = String.to_atom(value)
     Results.vote_cast(vote)
-    {:noreply, update(socket, :state, &Map.put(&1, :answer, vote))}
+
+    new_state =
+      socket
+      |> update(:state, &Map.put(&1, :answer, vote))
+      |> update(:state, &Map.put(&1, :question, %{}))
+
+    {:noreply, new_state}
   end
 
   def render(assigns) do

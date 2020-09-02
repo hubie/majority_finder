@@ -45,6 +45,11 @@ defmodule MajorityFinderWeb.Host do
     {:noreply, assign(socket, changeset: changeset)}
   end
 
+  def handle_event("validate", _, socket) do
+    changeset = %{}
+    {:noreply, assign(socket, changeset: changeset)}
+  end
+
   def handle_event("save", %{"question_select" => %{"question" => question_index}}, socket) do
     %{"question" => question, "answers" => answers} =
       questions() |> Enum.at(String.to_integer(question_index))
