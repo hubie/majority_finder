@@ -63,7 +63,7 @@ defmodule MajorityFinderWeb.Router do
     import Phoenix.LiveDashboard.Router
 
     scope "/" do
-      pipe_through :browser
+      pipe_through :restricted
       live_dashboard "/dashboard", metrics: MajorityFinderWeb.Telemetry
     end
   end
