@@ -52,6 +52,8 @@ Hooks.ResultsChart = {
             }]
         },
         options: {
+            responsive: true,
+            maintainAspectRatio: false,
             legend: {
               display: false
             },

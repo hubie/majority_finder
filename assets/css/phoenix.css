@@ -26,7 +26,8 @@ pre{padding: 1em;}
   max-width: 80.0rem;
   padding: 0 2.0rem;
   position: relative;
-  width: 100%
+  width: 100%;
+  height: 100%;
 }
 select {
   width: auto;
@@ -70,6 +71,30 @@ select {
   color: #666666;
 }
 
+.voter.answers button {
+
+}
+
+.resultscontainer {
+  height: 100vh;
+  overflow-y: hidden;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+}
+
+.chart-container {
+  min-width: 0;
+  min-height: 0;
+  position: relative;
+  min-height: 100%;
+  flex-grow: 2;
+}
+
+.results.chart {
+}
+
+
 input, select, textarea {
   color: #eeeeee;
   font-size: 24pt;
@@ -78,6 +103,19 @@ input, select, textarea {
 body {
   background-color: #000000;
   color: #e3e3e3;
+  min-height: 100%;
+  height: 100%;
+  overflow-y: hidden;
+}
+
+/*.phx-connected {
+  min-height: 100%;
+  height: 100%;
+}*/
+
+html {
+  height: 100% !important;
+  min-height: 100%;
 }
 
 /* Headers */

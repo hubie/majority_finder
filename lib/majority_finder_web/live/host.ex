@@ -93,7 +93,11 @@ defmodule MajorityFinderWeb.Host do
           "answers": ["Yes", "No"]
         },
         {
-          "question": "This community believes in the death penalty. This community believes in God.",
+          "question": "This community believes in the death penalty.",
+          "answers": ["Yes", "No"]
+        },
+        {
+          "question": "This community believes in God.",
           "answers": ["Yes", "No"]
         },
         {
@@ -137,7 +141,7 @@ defmodule MajorityFinderWeb.Host do
           "answers": ["Yes", "No"]
         },
         {
-          "question": "This community believes that attacking someone for holding an opin- ion is a helpful thing to do.",
+          "question": "This community believes that attacking someone for holding an opinion is a helpful thing to do.",
           "answers": ["Yes", "No"]
         }
       ]

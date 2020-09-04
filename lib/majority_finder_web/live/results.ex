@@ -31,10 +31,12 @@ defmodule MajorityFinderWeb.Results do
 
   def render(assigns) do
     ~L"""
-    <div>
-      <div phx-update="ignore">
-        <canvas id="resultsChart" phx-hook="ResultsChart" width="400" height="400"></canvas>
-        </div>
+    <div class="resultscontainer">
+      <%= live_component(
+        @socket,
+        MajorityFinderWeb.Components.ResultsComponent
+        )
+      %>
     </div>
     """
   end

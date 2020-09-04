@@ -63,10 +63,15 @@ defmodule MajorityFinderWeb.VoterLive do
 
   def render(assigns) do
     ~L"""
+    <%= live_component(
+      @socket,
+      MajorityFinderWeb.Components.TitleComponent
+      )
+    %>
     <div>
       <h1><%= get_in(@state, [:question, :question]) || "Waiting for a question..." %></h1>
       <%= for answers <- get_in(@state, [:question, :answers]) || [] do %>
-        <button phx-click="submitAnswer" value="<%= answers %>"><%= answers %></button>
+        <button phx-click="submitAnswer" class="voter answers" value="<%= answers %>"><%= answers %></button>
       <% end %>
     </div>
     """

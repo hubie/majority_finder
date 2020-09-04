@@ -32,7 +32,7 @@ defmodule MajorityFinderWeb.Router do
 
     live "/login", LoginLive, :index
 
-    live "/", PageLive, :index
+    live "/", VoterLive, :index
   end
 
   scope "/", MajorityFinderWeb do
