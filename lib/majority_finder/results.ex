@@ -1,11 +1,15 @@
 defmodule MajorityFinder.Results do
   use GenServer
 
+
   @initial_state %{
     results: %{},
+    ballots: %{},
     question: %{},
     voter_count: nil
   }
+
+  @max_votes 1
 
   @resultsTopic "results"
   @questionsTopic "questions"
@@ -18,13 +22,6 @@ defmodule MajorityFinder.Results do
   @impl true
   def init(_state) do
     {:ok, @initial_state}
-  end
-
-  @impl true
-  def handle_cast(%{vote_cast: vote}, state) do
-    {_, new_state} = get_and_update_in(state, [:results, vote], &{&1, (&1 || 0) + 1})
-    broadcast_results(new_state.results)
-    {:noreply, new_state}
   end
 
   @impl true
@@ -43,7 +40,7 @@ defmodule MajorityFinder.Results do
     clean_results = Map.new(possible_answers, fn a -> {a, 0} end)
     broadcast_question(new_question)
     broadcast_results(clean_results)
-    {:noreply, %{state | results: clean_results, question: new_question}}
+    {:noreply, %{state | results: clean_results, question: new_question, ballots: %{}}}
   end
 
   @impl true
@@ -51,6 +48,33 @@ defmodule MajorityFinder.Results do
     new_state = %{state | voter_count: voter_count}
     broadcast_metrics(%{voter_count: voter_count})
     {:noreply, new_state}
+  end
+
+  @impl true
+  def handle_call(%{voter_id: voter_id, vote_cast: _} = ballot, _from, state) do
+    votes_for_voter = get_vote_count_for_voter(voter_id, state)
+    cond do
+      votes_for_voter < @max_votes ->
+        new_state = tally_vote(ballot, state)
+        broadcast_results(new_state.results)
+        if votes_for_voter + 1 < @max_votes do
+          {:reply, %{voter_state: :new_question}, new_state}
+        else
+          {:reply, %{voter_state: :voted}, new_state}
+        end
+      true -> {:reply, %{voter_state: :voted}, state}
+    end
+  end
+
+  @impl true
+  def handle_call(%{get_voter_state: voter_id}, _from, state) do
+    vote_count = get_vote_count_for_voter(voter_id, state)
+    voter_state = cond do
+      %{} == state.question -> :voting_closed
+      vote_count >= @max_votes -> :voted
+      true -> :new_question
+    end
+    {:reply, voter_state, state}
   end
 
   @impl true
@@ -68,6 +92,17 @@ defmodule MajorityFinder.Results do
     {:reply, state.voter_count, state}
   end
 
+  defp get_vote_count_for_voter(voter_id, state) do
+    (get_in(state, [:ballots, voter_id]) || []) |> Enum.count
+  end
+
+  defp tally_vote(%{voter_id: voter_id, vote_cast: vote}, state) do
+    {_, new_state} = get_and_update_in(state, [:results, vote], &{&1, (&1 || 0) + 1})
+    {_, new_state} = get_and_update_in(new_state, [:ballots, voter_id], &{&1, (&1 || []) ++ [vote]})
+    new_state
+  end
+
+
   defp broadcast_results(results) do
     Phoenix.PubSub.broadcast(
       MajorityFinder.PubSub,
@@ -80,7 +115,7 @@ defmodule MajorityFinder.Results do
     Phoenix.PubSub.broadcast(
       MajorityFinder.PubSub,
       @questionsTopic,
-      {__MODULE__, %{new_question: question}}
+      {__MODULE__, %{new_question: question, voter_state: :new_question}}
     )
   end
 
@@ -96,8 +131,8 @@ defmodule MajorityFinder.Results do
     )
   end
 
-  def vote_cast(answer) do
-    GenServer.cast(__MODULE__, %{vote_cast: answer})
+  def vote_cast(voter_id, answer) do
+    GenServer.call(__MODULE__, %{voter_id: voter_id, vote_cast: answer})
   end
 
   def reset_results() do
@@ -122,5 +157,9 @@ defmodule MajorityFinder.Results do
 
   def update_user_count(new_count) do
     GenServer.cast(__MODULE__, %{new_voter_count: new_count})
+  end
+
+  def get_voter_state(voter_id) do
+    GenServer.call(__MODULE__, %{get_voter_state: voter_id})
   end
 end

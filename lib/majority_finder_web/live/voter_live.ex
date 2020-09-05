@@ -14,18 +14,14 @@ defmodule MajorityFinderWeb.VoterLive do
   end
 
   @initial_store %{
-    answer: nil,
     question: %{},
-    online_user_count: 0
+    online_user_count: 0,
+    session_id: nil,
+    voter_state: :new
   }
 
   def mount(_params, %{"session_uuid" => key}, socket) do
     if connected?(socket), do: subscribe()
-
-    state =
-      @initial_store
-      |> Map.put(:question, Results.get_current_question())
-      |> Map.put(:session_id, key)
 
     Presence.track(
       self(),
@@ -34,31 +30,32 @@ defmodule MajorityFinderWeb.VoterLive do
       %{}
     )
 
-    {:ok, assign(socket, :state, state)}
+    {:ok, assign(socket, %{@initial_store | question: Results.get_current_question(), session_id: key, voter_state: Results.get_voter_state(key)})}
   end
 
   def handle_info({Results, :voting_closed}, state) do
-    new_state =
-      update(state, :state, &Map.put(&1, :answer, nil))
-      |> update(:state, &Map.put(&1, :question, %{}))
+    new_state = state
+      |> update(:question, fn _ -> %{} end)
+      |> update(:voter_state, fn _ -> :voting_closed end)
 
     {:noreply, new_state}
   end
 
-  def handle_info({Results, %{new_question: question}}, state) do
-    {:noreply, update(state, :state, &Map.put(&1, :question, question))}
+  def handle_info({Results, %{new_question: question, voter_state: new_voter_state}}, state) do
+    new_state = state
+      |> update(:question, fn _ -> question end)
+      |> update(:voter_state, fn _ -> new_voter_state end)
+
+    {:noreply, new_state}
   end
 
   def handle_event("submitAnswer", %{"value" => value}, socket) do
     vote = String.to_atom(value)
-    Results.vote_cast(vote)
+    %{voter_state: new_voter_state} = Results.vote_cast(socket.assigns.session_id, vote)
+    new_socket = socket
+      |> update(:voter_state, fn _ -> new_voter_state end)
 
-    new_state =
-      socket
-      |> update(:state, &Map.put(&1, :answer, vote))
-      |> update(:state, &Map.put(&1, :question, %{}))
-
-    {:noreply, new_state}
+    {:noreply, new_socket}
   end
 
   def render(assigns) do
@@ -69,11 +66,19 @@ defmodule MajorityFinderWeb.VoterLive do
       )
     %>
     <div>
-      <h1><%= get_in(@state, [:question, :question]) || "Waiting for a question..." %></h1>
-      <%= for answers <- get_in(@state, [:question, :answers]) || [] do %>
-        <button phx-click="submitAnswer" class="voter answers" value="<%= answers %>"><%= answers %></button>
-      <% end %>
+      <h1> <%=
+        case @voter_state do
+          :new -> "Welcome!"
+          :voting_closed -> "Standby..."
+          :voted -> "Thanks for voting!"
+          :new_question ->
+            question = @question
+            live_component(@socket, MajorityFinderWeb.Components.QuestionComponent, question: question)
+          _ -> "Unknown state: #{@voter_state}"
+        end
+      %>
     </div>
     """
   end
+
 end

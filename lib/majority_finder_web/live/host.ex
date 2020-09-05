@@ -24,15 +24,15 @@ defmodule MajorityFinderWeb.Host do
     results = Results.get_current_results()
     voter_count = Results.get_current_voter_count()
     state = %{@initial_store | results: results, online_voters: voter_count}
-    {:ok, assign(socket, :state, state)}
+    {:ok, assign(socket, state)}
   end
 
   def handle_info({Results, %{results: results}}, state) do
-    {:noreply, update(state, :state, &Map.put(&1, :results, results))}
+    {:noreply, update(state, :results, fn _ -> results end)}
   end
 
   def handle_info({Results, %{online_voters: user_count}}, state) do
-    {:noreply, update(state, :state, &Map.put(&1, :online_voters, user_count))}
+    {:noreply, update(state, :online_voters, fn _ -> user_count end)}
   end
 
   def handle_event("select_question", params, socket) do
@@ -58,11 +58,16 @@ defmodule MajorityFinderWeb.Host do
     {:noreply, socket}
   end
 
+  def handle_event("save", _, socket) do
+
+    {:noreply, socket}
+  end
+
   def handle_event("close", _, socket) do
     new_state =
       socket
-      |> update(:state, &Map.put(&1, :results, %{}))
-      |> update(:state, &Map.put(&1, :question_state, :closed))
+      |> update(:results, fn _ -> %{} end)
+      # |> update(:question_state, fn _ -> :closed end)
 
     Results.reset_results()
 
@@ -165,12 +170,12 @@ defmodule MajorityFinderWeb.Host do
       <div class="host open-question question">
         <h3>Live results:</h3>
       </div>
-      <%= for {value, result} <- @state.results do %>
+      <%= for {value, result} <- @results do %>
         <div class="host open-question answers"><%= value %>: <%= result %></div>
       <% end %>
     </div>
     <div class="host metrics">
-      <div class="host metrics online-users">Online users: <%= @state.online_voters %></div>
+      <div class="host metrics online-users">Online users: <%= @online_voters %></div>
     </div>
     """
   end
