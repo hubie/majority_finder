@@ -1,8 +1,6 @@
 defmodule MajorityFinderWeb.Components.ResultsComponent do
   use Phoenix.LiveComponent
 
-  alias MajorityFinderWeb.Endpoint
-
   def render(assigns) do
     ~L"""
       <div phx-update="ignore" class="chart-container">

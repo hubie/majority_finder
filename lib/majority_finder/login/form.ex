@@ -8,7 +8,7 @@ defmodule MajorityFinder.Login.Form do
     |> verify_user
   end
 
-  def verify_user(%{validation_code: validation_code} = user) do
+  def verify_user(%{validation_code: validation_code} = _user) do
     case validation_code do
       vc when vc in @admin_codes ->
         IO.inspect("ITS AN ADMIN")

@@ -9,7 +9,6 @@ defmodule MajorityFinder.Metrics do
   }
 
   @metricsInjestion inspect(MajorityFinder.Metrics)
-  @metricsTopic "metrics"
 
   def start_link(args) do
     GenServer.start_link(__MODULE__, nil, args)
@@ -25,6 +24,7 @@ defmodule MajorityFinder.Metrics do
     {:ok, @initial_state}
   end
 
+  @impl true
   def handle_info(
         %{event: "presence_diff", payload: %{joins: joins, leaves: leaves}},
         %{online_voter_count: count} = socket

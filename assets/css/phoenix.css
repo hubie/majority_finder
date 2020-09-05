@@ -59,6 +59,7 @@ select {
 }
 
 .host.question-select {
+  width: 100%;
   height: 24rem;
 }
 
@@ -72,7 +73,7 @@ select {
 }
 
 .host.mode.selected {
-  background-color: #606c76;
+  background-color: #02b126;
 }
 
 .voter.answers button {

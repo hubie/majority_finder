@@ -64,6 +64,11 @@ defmodule MajorityFinderWeb.Host do
     {:noreply, socket}
   end
 
+  def handle_event("save", _, socket) do
+    # no qustion selected
+    {:noreply, socket}
+  end
+
   def handle_event("close", _, socket) do
     Results.reset_results()
     {:noreply, socket}
@@ -75,91 +80,19 @@ defmodule MajorityFinderWeb.Host do
   end
 
   defp questions() do
-    Jason.decode!(~s(
-      [
-        {
-          "question": "This community understands and accepts the voting system for the show tonight.",
-          "answers": ["Yes", "No"]
-        },
-        {
-          "question": "This community wishes to ban all latecomers.",
-          "answers": ["Yes", "No"]
-        },
-        {
-          "question": "This community is male.",
-          "answers": ["Yes", "No"]
-        },
-        {
-          "question": "This community is white.",
-          "answers": ["Yes", "No"]
-        },
-        {
-          "question": "This community is pro-choice.",
-          "answers": ["Yes", "No"]
-        },
-        {
-          "question": "This community believes in the death penalty.",
-          "answers": ["Yes", "No"]
-        },
-        {
-          "question": "This community believes in God.",
-          "answers": ["Yes", "No"]
-        },
-        {
-          "question": "This community believes in absolute freedom of speech.",
-          "answers": ["Yes", "No"]
-        },
-        {
-          "question": "This community believes they can make a difference.",
-          "answers": ["Yes", "No"]
-        },
-        {
-          "question": "This community believes that Scotland should be an independent country.",
-          "answers": ["Yes", "No"]
-        },
-        {
-          "question": "This community would push the lever.",
-          "answers": ["Yes", "No"]
-        },
-        {
-          "question": "This community would push the fat man to his death.",
-          "answers": ["Yes", "No"]
-        },
-        {
-          "question": "This community would push the lever.",
-          "answers": ["Yes", "No"]
-        },
-        {
-          "question": "This community would push the lever \(and save the five Nazi lives\).",
-          "answers": ["Yes", "No"]
-        },
-        {
-          "question": "This community believes that we should punish the minority by not giving them a toilet break.",
-          "answers": ["Yes", "No"]
-        },
-        {
-          "question": "This community believes that the UK should leave the EU.",
-          "answers": ["Yes", "No"]
-        },
-        {
-          "question": "This community believes the letter should be read.",
-          "answers": ["Yes", "No"]
-        },
-        {
-          "question": "This community believes that attacking someone for holding an opinion is a helpful thing to do.",
-          "answers": ["Yes", "No"]
-        }
-      ]
-      ))
+    "questions.json"
+      |>File.read!
+      |> Jason.decode!
   end
 
   def render(assigns) do
     ~L"""
     <div>
       Mode:
-      <button class="host mode <%= if @show_mode == :preshow, do: "selected" %>" phx-click="showmode" phx-value-mode="preshow">Preshow</button>
-      <button class="host mode <%= if @show_mode == :show, do: "selected" %>" phx-click="showmode" phx-value-mode="show">Show</button>
-      <button class="host mode <%= if @show_mode == :postshow, do: "selected" %>" phx-click="showmode" phx-value-mode="postshow">Postshow</button>
+      <% selected_class = "selected" %>
+      <button class="host mode <%= if @show_mode == :preshow, do: selected_class %>" phx-click="showmode" phx-value-mode="preshow">Preshow</button>
+      <button class="host mode <%= if @show_mode == :show, do: selected_class %>" phx-click="showmode" phx-value-mode="show">Show</button>
+      <button class="host mode <%= if @show_mode == :postshow, do: selected_class %>" phx-click="showmode" phx-value-mode="postshow">Postshow</button>
     </div>
     <div>
       <%= f = form_for :question_select, "#", [phx_change: :validate, phx_submit: :save] %>

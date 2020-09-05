@@ -33,7 +33,13 @@ defmodule MajorityFinderWeb.VoterLive do
       %{}
     )
 
-    {:ok, assign(socket, %{@initial_store | question: Results.get_current_question(), session_id: key, voter_state: Results.get_voter_state(key)})}
+    {:ok, assign(socket, %{@initial_store |
+      question: Results.get_current_question(),
+      session_id: key,
+      voter_state: Results.get_voter_state(key),
+      show_mode: Results.get_current_show_mode
+      })
+    }
   end
 
   def handle_info({Results, :voting_closed}, state) do

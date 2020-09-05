@@ -1,8 +1,6 @@
 defmodule MajorityFinderWeb.Components.QuestionComponent do
   use Phoenix.LiveComponent
 
-  alias MajorityFinderWeb.Endpoint
-
   def render(assigns) do
     ~L"""
     <h1 class="question">
