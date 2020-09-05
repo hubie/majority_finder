@@ -7,17 +7,20 @@ defmodule MajorityFinderWeb.VoterLive do
   @topic inspect(__MODULE__)
   @metricsTopic inspect(MajorityFinder.Metrics)
   @questionTopic "questions"
+  @showTopic "showControl"
 
   def subscribe do
     Phoenix.PubSub.subscribe(MajorityFinder.PubSub, @topic)
     Phoenix.PubSub.subscribe(MajorityFinder.PubSub, @questionTopic)
+    Phoenix.PubSub.subscribe(MajorityFinder.PubSub, @showTopic)
   end
 
   @initial_store %{
     question: %{},
     online_user_count: 0,
     session_id: nil,
-    voter_state: :new
+    voter_state: :new,
+    show_mode: nil
   }
 
   def mount(_params, %{"session_uuid" => key}, socket) do
@@ -37,6 +40,13 @@ defmodule MajorityFinderWeb.VoterLive do
     new_state = state
       |> update(:question, fn _ -> %{} end)
       |> update(:voter_state, fn _ -> :voting_closed end)
+
+    {:noreply, new_state}
+  end
+
+  def handle_info({Results, %{show_mode: mode}}, state) do
+    new_state = state
+      |> update(:show_mode, fn _ -> mode end)
 
     {:noreply, new_state}
   end
@@ -67,14 +77,20 @@ defmodule MajorityFinderWeb.VoterLive do
     %>
     <div>
       <h1> <%=
-        case @voter_state do
-          :new -> "Welcome!"
-          :voting_closed -> "Standby..."
-          :voted -> "Thanks for voting!"
-          :new_question ->
-            question = @question
-            live_component(@socket, MajorityFinderWeb.Components.QuestionComponent, question: question)
-          _ -> "Unknown state: #{@voter_state}"
+        case @show_mode do
+          :preshow -> "HI!  Welcome!"
+          :show ->
+            case @voter_state do
+              :preshow -> "Welcome!  The show will start shortly!"
+              :voting_closed -> "Standby..."
+              :voted -> "Thanks for voting!"
+              :new_question ->
+                question = @question
+                live_component(@socket, MajorityFinderWeb.Components.QuestionComponent, question: question)
+              _ -> "Unknown state: #{@voter_state}"
+            end
+          :postshow -> "Have a good night!"
+          _ -> "Unknown show state #{@show_mode}"
         end
       %>
     </div>

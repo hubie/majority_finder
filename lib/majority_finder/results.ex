@@ -6,7 +6,8 @@ defmodule MajorityFinder.Results do
     results: %{},
     ballots: %{},
     question: %{},
-    voter_count: nil
+    voter_count: nil,
+    show_mode: :show
   }
 
   @max_votes 1
@@ -14,6 +15,7 @@ defmodule MajorityFinder.Results do
   @resultsTopic "results"
   @questionsTopic "questions"
   @metricsTopic "metrics"
+  @showTopic "showControl"
 
   def start_link(args) do
     GenServer.start_link(__MODULE__, nil, args)
@@ -51,6 +53,13 @@ defmodule MajorityFinder.Results do
   end
 
   @impl true
+  def handle_cast(%{set_show_mode: mode}, state) do
+    new_state = %{state | show_mode: mode}
+    broadcast_show_mode(%{show_mode: mode})
+    {:noreply, new_state}
+  end
+
+  @impl true
   def handle_call(%{voter_id: voter_id, vote_cast: _} = ballot, _from, state) do
     votes_for_voter = get_vote_count_for_voter(voter_id, state)
     cond do
@@ -80,6 +89,11 @@ defmodule MajorityFinder.Results do
   @impl true
   def handle_call(:get_current_results, _from, state) do
     {:reply, state.results, state}
+  end
+
+  @impl true
+  def handle_call(:get_current_show_mode, _from, state) do
+    {:reply, state.show_mode, state}
   end
 
   @impl true
@@ -131,6 +145,10 @@ defmodule MajorityFinder.Results do
     )
   end
 
+  defp broadcast_show_mode(mode) do
+    Phoenix.PubSub.broadcast(MajorityFinder.PubSub, @showTopic, {__MODULE__, mode})
+  end
+
   def vote_cast(voter_id, answer) do
     GenServer.call(__MODULE__, %{voter_id: voter_id, vote_cast: answer})
   end
@@ -161,5 +179,13 @@ defmodule MajorityFinder.Results do
 
   def get_voter_state(voter_id) do
     GenServer.call(__MODULE__, %{get_voter_state: voter_id})
+  end
+
+  def set_show_mode(%{show_mode: mode}) do
+    GenServer.cast(__MODULE__, %{set_show_mode: mode})
+  end
+
+  def get_current_show_mode() do
+    GenServer.call(__MODULE__, :get_current_show_mode)
   end
 end

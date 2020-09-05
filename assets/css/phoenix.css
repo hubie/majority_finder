@@ -71,6 +71,10 @@ select {
   color: #666666;
 }
 
+.host.mode.selected {
+  background-color: #606c76;
+}
+
 .voter.answers button {
 
 }

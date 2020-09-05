@@ -7,23 +7,27 @@ defmodule MajorityFinderWeb.Host do
   @topic inspect(__MODULE__)
   @resultsTopic "results"
   @metricsTopic "metrics"
+  @showTopic "showControl"
 
   @initial_store %{
     results: nil,
-    online_voters: 0
+    online_voters: 0,
+    show_mode: nil
   }
 
   def subscribe do
     Phoenix.PubSub.subscribe(MajorityFinder.PubSub, @topic)
     Phoenix.PubSub.subscribe(MajorityFinder.PubSub, @resultsTopic)
     Phoenix.PubSub.subscribe(MajorityFinder.PubSub, @metricsTopic)
+    Phoenix.PubSub.subscribe(MajorityFinder.PubSub, @showTopic)
   end
 
   def mount(_params, _session, socket) do
     if connected?(socket), do: subscribe()
     results = Results.get_current_results()
     voter_count = Results.get_current_voter_count()
-    state = %{@initial_store | results: results, online_voters: voter_count}
+    show_mode = Results.get_current_show_mode()
+    state = %{@initial_store | results: results, online_voters: voter_count, show_mode: show_mode}
     {:ok, assign(socket, state)}
   end
 
@@ -35,9 +39,11 @@ defmodule MajorityFinderWeb.Host do
     {:noreply, update(state, :online_voters, fn _ -> user_count end)}
   end
 
-  def handle_event("select_question", params, socket) do
-    IO.inspect(params, label: "SELECT QUESTION")
-    {:noreply, socket}
+  def handle_info({Results, %{show_mode: mode}}, state) do
+    new_state = state
+      |> update(:show_mode, fn _ -> mode end)
+
+    {:noreply, new_state}
   end
 
   def handle_event("validate", %{"question_select" => _selected_index}, socket) do
@@ -58,19 +64,13 @@ defmodule MajorityFinderWeb.Host do
     {:noreply, socket}
   end
 
-  def handle_event("save", _, socket) do
-
+  def handle_event("close", _, socket) do
+    Results.reset_results()
     {:noreply, socket}
   end
 
-  def handle_event("close", _, socket) do
-    new_state =
-      socket
-      |> update(:results, fn _ -> %{} end)
-      # |> update(:question_state, fn _ -> :closed end)
-
-    Results.reset_results()
-
+  def handle_event("showmode", %{"mode" => mode}, socket) do
+    Results.set_show_mode(%{show_mode: String.to_atom(mode)})
     {:noreply, socket}
   end
 
@@ -155,6 +155,12 @@ defmodule MajorityFinderWeb.Host do
 
   def render(assigns) do
     ~L"""
+    <div>
+      Mode:
+      <button class="host mode <%= if @show_mode == :preshow, do: "selected" %>" phx-click="showmode" phx-value-mode="preshow">Preshow</button>
+      <button class="host mode <%= if @show_mode == :show, do: "selected" %>" phx-click="showmode" phx-value-mode="show">Show</button>
+      <button class="host mode <%= if @show_mode == :postshow, do: "selected" %>" phx-click="showmode" phx-value-mode="postshow">Postshow</button>
+    </div>
     <div>
       <%= f = form_for :question_select, "#", [phx_change: :validate, phx_submit: :save] %>
         <%= select f, :question, Enum.map(Enum.with_index(questions()), fn {%{"question" => q}, i} -> {"Q#{i}: #{q}", i} end), [class: "host question-select", size: "6"] %>
