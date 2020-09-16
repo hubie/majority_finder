@@ -1,6 +1,7 @@
 defmodule MajorityFinderWeb.Host do
   use Phoenix.LiveView
   import Phoenix.HTML.Form
+  import Plug.Conn, only: [halt: 1]
 
   alias MajorityFinder.Results
 
@@ -22,12 +23,12 @@ defmodule MajorityFinderWeb.Host do
     Phoenix.PubSub.subscribe(MajorityFinder.PubSub, @showTopic)
   end
 
-  def mount(_params, _session, socket) do
+  def mount(args, %{"user_id" => user_id} = session, socket) do
     if connected?(socket), do: subscribe()
-    results = Results.get_current_results()
-    voter_count = Results.get_current_voter_count()
-    show_mode = Results.get_current_show_mode()
-    state = %{@initial_store | results: results, online_voters: voter_count, show_mode: show_mode}
+
+    state = %{@initial_store | results: Results.get_current_results(),
+                               online_voters: Results.get_current_voter_count(),
+                               show_mode: Results.get_current_show_mode()}
     {:ok, assign(socket, state)}
   end
 
@@ -60,7 +61,7 @@ defmodule MajorityFinderWeb.Host do
     %{"question" => question, "answers" => answers} =
       questions() |> Enum.at(String.to_integer(question_index))
 
-    Results.new_question(%{question: question, answers: answers |> Enum.map(&String.to_atom(&1))})
+    Results.new_question(%{question: question, answers: answers})
     {:noreply, socket}
   end
 

@@ -23,7 +23,7 @@ defmodule MajorityFinderWeb.VoterLive do
     show_mode: nil
   }
 
-  def mount(_params, %{"session_uuid" => key}, socket) do
+  def mount(params, %{"session_uuid" => key} = session, socket) do
     if connected?(socket), do: subscribe()
 
     Presence.track(
@@ -66,8 +66,7 @@ defmodule MajorityFinderWeb.VoterLive do
   end
 
   def handle_event("submitAnswer", %{"value" => value}, socket) do
-    vote = String.to_atom(value)
-    %{voter_state: new_voter_state} = Results.vote_cast(socket.assigns.session_id, vote)
+    %{voter_state: new_voter_state} = Results.vote_cast(socket.assigns.session_id, value)
     new_socket = socket
       |> update(:voter_state, fn _ -> new_voter_state end)
 

@@ -30,6 +30,12 @@ defmodule MajorityFinderWeb.LoginLive do
   end
 
   @impl true
+  def mount(params, %{"session_uuid" => key} = session, socket) do
+    mount(params, %{"session_uuid" => key, "return_to" => "/vote"}, socket)
+  end
+
+
+  @impl true
   def handle_event(
         "save",
         %{"user" => %{"validation_code" => validation_code} = params},
@@ -38,9 +44,7 @@ defmodule MajorityFinderWeb.LoginLive do
     if Map.get(params, "form_disabled", nil) != "true" do
       current_user =
         MajorityFinder.Login.Form.get_user_by_code(%User{validation_code: validation_code})
-
       send(self(), {:disable_form, current_user})
-
       {:noreply, assign(socket, current_user: current_user)}
     else
       {:noreply, socket}

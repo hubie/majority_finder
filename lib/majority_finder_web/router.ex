@@ -13,14 +13,12 @@ defmodule MajorityFinderWeb.Router do
     plug :validate_session
   end
 
-  pipeline :restricted do
-    plug :browser
-    plug :redirect_unauthorized, roles: [:admin, :voter]
+  pipeline :voter do
+    plug :redirect_unauthorized, resource: :voter
   end
 
   pipeline :admin do
-    plug :browser
-    plug :redirect_unauthorized, roles: [:admin]
+    plug :redirect_unauthorized, resource: :admin
   end
 
   pipeline :api do
@@ -36,15 +34,15 @@ defmodule MajorityFinderWeb.Router do
   end
 
   scope "/", MajorityFinderWeb do
-    pipe_through :admin
+    pipe_through [:browser, :admin]
     live("/results", Results)
     live("/host", Host)
   end
 
-  scope "/vote", MajorityFinderWeb do
-    pipe_through :restricted
+  scope "/", MajorityFinderWeb do
+    pipe_through [:browser, :voter]
 
-    live "/", VoterLive, :index
+    live "/vote", VoterLive, :index
   end
 
   # Other scopes may use custom stacks.
@@ -59,11 +57,11 @@ defmodule MajorityFinderWeb.Router do
   # If your application does not have an admins-only section yet,
   # you can use Plug.BasicAuth to set up some basic authentication
   # as long as you are also using SSL (which you should anyway).
-  if Mix.env() in [:dev, :test] do
+  if Mix.env() in [:dev, :test, :prod] do
     import Phoenix.LiveDashboard.Router
 
     scope "/" do
-      pipe_through :restricted
+      pipe_through [:browser, :admin]
       live_dashboard "/dashboard", metrics: MajorityFinderWeb.Telemetry
     end
   end

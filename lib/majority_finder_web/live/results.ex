@@ -26,7 +26,7 @@ defmodule MajorityFinderWeb.Results do
   end
 
   defp formatResults(results) do
-    for {k, v} <- results, into: %{}, do: {k |> Atom.to_string() |> String.capitalize(), v}
+    results
   end
 
   def render(assigns) do

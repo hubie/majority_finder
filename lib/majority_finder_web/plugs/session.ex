@@ -1,19 +1,24 @@
 defmodule MajorityFinderWeb.Plug.Session do
   import Plug.Conn, only: [get_session: 2, put_session: 3, halt: 1, assign: 3]
-  import Phoenix.Controller, only: [redirect: 2]
+  import Phoenix.Controller, only: [redirect: 2, put_flash: 3]
 
-  def redirect_unauthorized(conn, _opts) do
+  def redirect_unauthorized(conn, [resource: resource] = _opts) do
     user_id = Map.get(conn.assigns, :user_id)
-    user_role = Map.get(conn.assigns, :role)
-
-    #  || user_role not in opts[:roles]
-    if user_id == nil do
-      conn
-      |> put_session(:return_to, conn.request_path)
-      |> redirect(to: MajorityFinderWeb.Router.Helpers.login_path(conn, :index))
-      |> halt()
-    else
-      conn
+    # user_role = Map.get(conn.assigns, :role)
+    cond do
+      user_id == nil ->
+        conn
+          |> put_session(:return_to, conn.request_path)
+          |> redirect(to: MajorityFinderWeb.Router.Helpers.login_path(conn, :index))
+          |> halt()
+      :ok == Bodyguard.permit(MajorityFinder.User, resource, %{user_id: user_id}) ->
+        conn
+      true ->
+        conn
+          |> put_flash(:info, "Unauthorized")
+          |> put_session(:return_to, conn.request_path)
+          |> redirect(to: MajorityFinderWeb.Router.Helpers.login_path(conn, :index))
+          |> halt()
     end
   end
 
@@ -36,8 +41,9 @@ defmodule MajorityFinderWeb.Plug.Session do
                max_age: 806_400
              ) do
           {:ok, user_id} ->
-            conn |> assign(:user_id, user_id)
-
+            conn
+              |> assign(:user_id, user_id)
+              |> put_session("user_id", user_id)
           _ ->
             conn
         end
