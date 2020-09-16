@@ -1,7 +1,6 @@
 defmodule MajorityFinderWeb.Host do
   use Phoenix.LiveView
   import Phoenix.HTML.Form
-  import Plug.Conn, only: [halt: 1]
 
   alias MajorityFinder.Results
 
@@ -23,7 +22,7 @@ defmodule MajorityFinderWeb.Host do
     Phoenix.PubSub.subscribe(MajorityFinder.PubSub, @showTopic)
   end
 
-  def mount(args, %{"user_id" => user_id} = session, socket) do
+  def mount(_args, %{"user_id" => _user_id} = _session, socket) do
     if connected?(socket), do: subscribe()
 
     state = %{@initial_store | results: Results.get_current_results(),

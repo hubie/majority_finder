@@ -23,7 +23,7 @@ defmodule MajorityFinderWeb.VoterLive do
     show_mode: nil
   }
 
-  def mount(params, %{"session_uuid" => key} = session, socket) do
+  def mount(_params, %{"session_uuid" => key} = _session, socket) do
     if connected?(socket), do: subscribe()
 
     Presence.track(

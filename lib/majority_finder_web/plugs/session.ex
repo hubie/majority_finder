@@ -1,6 +1,7 @@
 defmodule MajorityFinderWeb.Plug.Session do
   import Plug.Conn, only: [get_session: 2, put_session: 3, halt: 1, assign: 3]
   import Phoenix.Controller, only: [redirect: 2, put_flash: 3]
+  import MajorityFinderWeb.Live.Helper, only: [signing_salt: 0]
 
   def redirect_unauthorized(conn, [resource: resource] = _opts) do
     user_id = Map.get(conn.assigns, :user_id)
@@ -51,10 +52,5 @@ defmodule MajorityFinderWeb.Plug.Session do
       _ ->
         conn
     end
-  end
-
-  def signing_salt do
-    MajorityFinderWeb.Endpoint.config(:live_view)[:signing_salt] ||
-      raise MajorityFinderWeb.AuthenticationError, message: "missing signing_salt"
   end
 end

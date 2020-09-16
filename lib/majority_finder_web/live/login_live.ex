@@ -30,8 +30,8 @@ defmodule MajorityFinderWeb.LoginLive do
   end
 
   @impl true
-  def mount(params, %{"session_uuid" => key} = session, socket) do
-    mount(params, %{"session_uuid" => key, "return_to" => "/vote"}, socket)
+  def mount(params, %{"session_uuid" => key} = _session, socket) do
+    mount(params, %{"session_uuid" => key, "return_to" => "/"}, socket)
   end
 
 
