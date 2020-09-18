@@ -7,7 +7,8 @@ defmodule MajorityFinder.Results do
     ballots: %{},
     question: %{},
     voter_count: nil,
-    show_mode: :show
+    show_mode: :show,
+    archived_results: %{}
   }
 
   @max_votes 1
@@ -28,7 +29,7 @@ defmodule MajorityFinder.Results do
 
   @impl true
   def handle_cast(:reset_results, state) do
-    new_state = %{state | results: %{}, question: %{}}
+    new_state = archive_results(state)
     broadcast_voting_closed()
     broadcast_results(new_state.results)
     {:noreply, new_state}
@@ -116,6 +117,10 @@ defmodule MajorityFinder.Results do
     new_state
   end
 
+  defp archive_results(%{results: results, question: question, archived_results: archived_results} = state) do
+    new_archive = Map.put(archived_results, question.id, %{results: results, question: question})
+    %{state | results: %{}, question: %{}, archived_results: new_archive}
+  end
 
   defp broadcast_results(results) do
     Phoenix.PubSub.broadcast(

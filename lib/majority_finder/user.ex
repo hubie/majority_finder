@@ -23,7 +23,7 @@ defmodule MajorityFinder.User do
     end
   end
 
-  def authorize(_, %__MODULE__{role: :admin}, _),do: true
+  def authorize(_, %__MODULE__{role: :admin}, _), do: true
   def authorize(:voter, %__MODULE__{role: :voter}, _), do: true
   def authorize(action, %{user_id: user_id}, params), do: authorize(action, get_user(%{user_id: user_id}), params)
   def authorize(_action, _user, _params), do: false

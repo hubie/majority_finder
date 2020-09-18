@@ -5,7 +5,7 @@ defmodule MajorityFinderWeb.Plug.Session do
 
   def redirect_unauthorized(conn, [resource: resource] = _opts) do
     user_id = Map.get(conn.assigns, :user_id)
-    # user_role = Map.get(conn.assigns, :role)
+
     cond do
       user_id == nil ->
         conn

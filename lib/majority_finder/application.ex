@@ -16,7 +16,8 @@ defmodule MajorityFinder.Application do
       # Start a worker by calling: MajorityFinder.Worker.start_link(arg)
       MajorityFinder.Presence,
       {MajorityFinder.Results, [name: MajorityFinder.Results]},
-      {MajorityFinder.Metrics, [name: MajorityFinder.Metrics]}
+      {MajorityFinder.Metrics, [name: MajorityFinder.Metrics]},
+      {MajorityFinder.Questions, [name: MajorityFinder.Questions]}
     ]
 
     :ets.new(:auth_table, [:set, :public, :named_table, read_concurrency: true])
