@@ -9,6 +9,7 @@ defmodule MajorityFinderWeb.Components.QuestionComponent do
     <%= for answers <- get_in(@question, [:answers]) || [] do %>
       <button phx-click="submitAnswer" class="voter answers" value="<%= answers %>"><%= answers %></button>
     <% end %>
+    <div id="countdownTimer" phx-hook="Timer"></div>
     """
   end
 end

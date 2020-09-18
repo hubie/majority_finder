@@ -1,7 +1,8 @@
 [
   {
     "question": "This community understands and accepts the voting system for the show tonight.",
-    "answers": ["Yes", "No"]
+    "answers": ["Yes", "No"],
+    "time_limit": 10
   },
   {
     "question": "This community wishes to ban all latecomers.",

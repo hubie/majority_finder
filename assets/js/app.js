@@ -19,8 +19,35 @@ import {LiveSocket} from "phoenix_live_view"
 
 require("chartkick")
 require("chart.js")
+var TimerClass = require("easytimer.js").Timer
+var timer = new TimerClass();
+
+
+function updateTimerValue() {
+  var s= document.getElementById('countdownTimer')
+  s.innerHTML = timer.getTimeValues().toString(['minutes', 'seconds']);
+}
 
 let Hooks = {}
+Hooks.Timer = {
+
+  mounted() {
+    timer.addEventListener('secondsUpdated', function (e) {
+      updateTimerValue()
+    });
+    this.handleEvent("no_timer", ({data}) => {
+        timer.stop()
+        // updateTimerValue()
+      }
+    )
+    this.handleEvent("new_timer", ({data}) => {
+        timer.stop()
+        timer.start({countdown: true, startValues: {seconds: data}});
+        updateTimerValue()
+      }
+    )
+  }
+}
 Hooks.ResultsChart = {
   mounted() {
 

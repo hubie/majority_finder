@@ -1,6 +1,7 @@
 defmodule MajorityFinder.Results do
   use GenServer
 
+  alias MajorityFinder.Questions
 
   @initial_state %{
     results: %{},
@@ -37,10 +38,11 @@ defmodule MajorityFinder.Results do
 
   @impl true
   def handle_cast(
-        %{new_question: %{question: _question, answers: possible_answers} = new_question},
+        %{new_question: %{id: id}},
         state
       ) do
-    clean_results = Map.new(possible_answers, fn a -> {a, 0} end)
+    new_question = GenServer.call(Questions, %{get_question: id})
+    clean_results = Map.new(new_question.answers, fn a -> {a, 0} end)
     broadcast_question(new_question)
     broadcast_results(clean_results)
     {:noreply, %{state | results: clean_results, question: new_question, ballots: %{}}}

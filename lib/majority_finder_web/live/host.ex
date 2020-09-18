@@ -62,10 +62,10 @@ defmodule MajorityFinderWeb.Host do
   end
 
   def handle_event("save", %{"question_select" => %{"question" => question_index}}, socket) do
-    %{"question" => question, "answers" => answers, id: id} =
+    %{question: question, answers: answers, id: id} =
       socket.assigns.questions |> Enum.at(String.to_integer(question_index))
 
-    Results.new_question(%{id: id, question: question, answers: answers})
+    Results.new_question(%{id: id})
     {:noreply, socket}
   end
 
@@ -95,7 +95,7 @@ defmodule MajorityFinderWeb.Host do
     </div>
     <div>
       <%= f = form_for :question_select, "#", [phx_change: :validate, phx_submit: :save] %>
-        <%= select f, :question, Enum.map(Enum.with_index(@questions), fn {%{"question" => q}, i} -> {"Q#{i}: #{q}", i} end), [class: "host question-select", size: "6"] %>
+        <%= select f, :question, Enum.map(Enum.with_index(@questions), fn {%{question: q}, i} -> {"Q#{i}: #{q}", i} end), [class: "host question-select", size: "6"] %>
         <div>
           <%= submit "Submit Question" %>
         </div>

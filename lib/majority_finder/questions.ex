@@ -26,10 +26,15 @@ defmodule MajorityFinder.Questions do
     {:reply, state.questions, state}
   end
 
+  @impl true
+  def handle_call(%{get_question: id}, _from, state) do
+    {:reply, Enum.find(state.questions, fn x -> x.id == id end), state}
+  end
+
   defp load_questions() do
     "questions.json"
       |> File.read!
-      |> Jason.decode!
+      |> Jason.decode!(keys: :atoms)
       |> Enum.with_index()
       |> Enum.map(fn {q, i} -> Map.put(q, :id, Map.get(q, :id, :crypto.hash(:md5, "#{i}") |> Base.encode16() )) end)
   end

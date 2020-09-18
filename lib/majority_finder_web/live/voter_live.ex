@@ -62,6 +62,11 @@ defmodule MajorityFinderWeb.VoterLive do
       |> update(:question, fn _ -> question end)
       |> update(:voter_state, fn _ -> new_voter_state end)
 
+    new_state = case Map.get(question, :time_limit) do
+      nil -> push_event(new_state, "no_timer", %{})
+      limit -> push_event(new_state, "new_timer", %{data: limit})
+    end
+
     {:noreply, new_state}
   end
 
