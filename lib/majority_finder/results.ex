@@ -91,7 +91,7 @@ defmodule MajorityFinder.Results do
 
   @impl true
   def handle_call(:get_current_results, _from, state) do
-    {:reply, state.results, state}
+    {:reply, %{question: state.question, results: state.results}, state}
   end
 
   @impl true

@@ -99,6 +99,45 @@ select {
 .results.chart {
 }
 
+.results.headline {
+  text-align: center;
+  line-height: 125%;
+  font-size: 8rem;
+  font-weight: bold;
+  font-family: "arial-black", sans-serif;
+}
+
+.results.headline.answers {
+  display: inline;
+}
+
+.results.headline.answerset {
+  display: inline;
+  padding: 4rem;
+}
+
+.results.headline.answer {
+  font-size: 14rem;
+  display: inline;
+  text-transform: uppercase;
+  /*float: left;*/
+}
+
+.results.headline.result {
+  display: inline;
+  font-size: 14rem;
+  /*float: left;*/
+}
+
+.results.headline.answer[answer=No] {
+  color: red;
+}
+
+.results.headline.answer[answer=Yes] {
+  color: blue;
+}
+
+
 
 input, select, textarea {
   color: #eeeeee;

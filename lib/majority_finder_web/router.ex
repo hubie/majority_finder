@@ -36,6 +36,7 @@ defmodule MajorityFinderWeb.Router do
   scope "/", MajorityFinderWeb do
     pipe_through [:browser, :admin]
     live("/results", Results)
+    live("/results/:view", Results)
     live("/host", Host)
   end
 
