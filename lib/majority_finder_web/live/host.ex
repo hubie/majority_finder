@@ -35,12 +35,12 @@ defmodule MajorityFinderWeb.Host do
     {:ok, assign(socket, state)}
   end
 
-  def handle_info({Results, results}, state) do
-    {:noreply, update(state, :results, fn _ -> results end)}
-  end
-
   def handle_info({Results, %{online_voters: user_count}}, state) do
     {:noreply, update(state, :online_voters, fn _ -> user_count end)}
+  end
+
+  def handle_info({Results, %{results: _r} = results}, state) do
+    {:noreply, update(state, :results, fn _ -> results end)}
   end
 
   def handle_info({Results, %{show_mode: mode}}, state) do
