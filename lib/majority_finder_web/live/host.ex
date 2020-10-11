@@ -32,11 +32,10 @@ defmodule MajorityFinderWeb.Host do
                                show_mode: Results.get_current_show_mode(),
                                questions: GenServer.call(Questions, :get_questions)
                              }
-    IO.inspect(state)
     {:ok, assign(socket, state)}
   end
 
-  def handle_info({Results, %{results: results}}, state) do
+  def handle_info({Results, results}, state) do
     {:noreply, update(state, :results, fn _ -> results end)}
   end
 
@@ -108,7 +107,7 @@ defmodule MajorityFinderWeb.Host do
       <div class="host open-question question">
         <h3>Live results:</h3>
       </div>
-      <%= for {value, result} <- @results do %>
+      <%= for {value, result} <- @results.results do %>
         <div class="host open-question answers"><%= value %>: <%= result %></div>
       <% end %>
     </div>
