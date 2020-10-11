@@ -16,6 +16,7 @@ defmodule MajorityFinderWeb.VoterLive do
   end
 
   @initial_store %{
+    embed: false,
     question: %{},
     online_user_count: 0,
     session_id: nil,
@@ -23,7 +24,7 @@ defmodule MajorityFinderWeb.VoterLive do
     show_mode: nil
   }
 
-  def mount(_params, %{"session_uuid" => key} = _session, socket) do
+  def mount(params, %{"session_uuid" => key} = session, socket) do
     if connected?(socket), do: subscribe()
 
     Presence.track(
@@ -32,8 +33,10 @@ defmodule MajorityFinderWeb.VoterLive do
       socket.id,
       %{}
     )
+    embed = Access.get(params, "embed", "false") == "true"
 
     {:ok, assign(socket, %{@initial_store |
+      embed: embed,
       question: Results.get_current_question(),
       session_id: key,
       voter_state: Results.get_voter_state(key),
@@ -80,7 +83,9 @@ defmodule MajorityFinderWeb.VoterLive do
 
   def render(assigns) do
     ~L"""
-    <%= live_component(
+    <%=
+      if !@embed, do: 
+      live_component(
       @socket,
       MajorityFinderWeb.Components.TitleComponent
       )

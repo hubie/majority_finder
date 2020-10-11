@@ -43,6 +43,7 @@ defmodule MajorityFinderWeb.Router do
   scope "/", MajorityFinderWeb do
     pipe_through [:browser, :voter]
 
+    live "/watch", WatchLive, :index
     live "/vote", VoterLive, :index
   end
 

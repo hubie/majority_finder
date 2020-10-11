@@ -137,7 +137,24 @@ select {
   color: blue;
 }
 
+.votepanel {
+  flex-grow: 1;
+  min-height: 40rem;
+  position: relative;
+}
 
+.videopanel {
+  flex-grow: 3;
+}
+
+.embeddedvote {
+  border: 0;
+   height: 100%;
+   left: 0;
+   position: absolute;
+   top: 0;
+   width: 100%;
+}
 
 input, select, textarea {
   color: #eeeeee;
