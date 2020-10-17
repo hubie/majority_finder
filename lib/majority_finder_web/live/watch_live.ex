@@ -25,8 +25,6 @@ defmodule MajorityFinderWeb.WatchLive do
 
   def render(assigns) do
     ~L"""
-    <%= theoplayerconfig(assigns) %>
-    <link rel="stylesheet" type="text/css" href='/path/to/ui.css'>
 
     <%= live_component(
       @socket,
@@ -34,10 +32,26 @@ defmodule MajorityFinderWeb.WatchLive do
       )
     %>
     <div display="flex">
-      <div class="videopanel">
-        <div class="theoplayer-container video-js theoplayer-skin vjs-16-9"></div>
+      <div phx-update="ignore" class="videopanel">
+        <div phx-update="ignore" class="theoplayer-container video-js theoplayer-skin vjs-16-9"></div>
+          <script phx-update="ignore">
+            var element = document.querySelector(".theoplayer-container");
+            var player = new THEOplayer.Player(element, {
+                libraryLocation: "https://cdn.myth.theoplayer.com/1230daef-f515-4df9-b106-eacd30822514"
+            });
 
-        <!--<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://vimeo.com/event/369120/embed/51a83aab7b" frameborder="0" allow="autoplay; fullscreen" allowfullscreen style="position:absolute;top:0;left:0;width:100%;height:100%;"></iframe></div> -->
+            player.source = {
+                sources: [{
+                    "src": "http://54.201.153.25:443/live/themajority/playlist.m3u8",
+                    "type": "application/x-mpegurl",
+                    "lowLatency": true
+                }]
+
+            };
+
+            player.autoplay = false;
+            player.preload = 'auto';
+          </script>
       </div>
       <%= if @vote_here do %>
         <div class="votepanel">
@@ -57,35 +71,6 @@ defmodule MajorityFinderWeb.WatchLive do
         </div>
       <% end %>
     </div>
-    """
-  end
-
-  defp theoplayerconfig(assigns) do
-    ~L"""
-      <script>
-      var element = document.querySelector(".theoplayer-container");
-      var player = new THEOplayer.Player(element, {
-          libraryLocation: "https://cdn.myth.theoplayer.com/1230daef-f515-4df9-b106-eacd30822514"
-      });
-
-      // OPTIONAL CONFIGURATION
-      // Customized video player parameters
-      player.source = {
-          sources: [{
-              "src": "https://pf5.broadpeak-vcdn.com/bpk-tv/tvrll/llcmaf/index.m3u8",
-              "type": "application/x-mpegurl",
-              "lowLatency": true
-          }],
-          // // Advertisement configuration
-          // ads: [{
-          //     "sources": "//cdn.theoplayer.com/demos/preroll.xml",
-          //     "timeOffset": "start",
-          //     "skipOffset": 2
-          // }]
-      };
-
-      player.preload = 'auto';
-    </script>
     """
   end
 end
