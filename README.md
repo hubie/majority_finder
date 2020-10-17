@@ -1,18 +1,13 @@
 # MajorityFinder
 
-To start your Phoenix server:
+## Quickstart
 
-  * Setup the project with `mix setup`
-  * Start Phoenix endpoint with `mix phx.server`
+* Run
+```
+export MEH=$(mix phx.gen.secret 32) && \
+export LOL=$(mix phx.gen.secret)` && \
+iex -S mix phx.server
+```
+* Visit [`/vote`](http://localhost:4000/vote) to vote, [`/host`](http://localhost:4000/host) to present and control questions, and [`/results`](https://localhost:4000/results) to view the results (live!) as the votes roll in.
 
-Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
-
-Ready to run in production? Please [check our deployment guides](https://hexdocs.pm/phoenix/deployment.html).
-
-## Learn more
-
-  * Official website: https://www.phoenixframework.org/
-  * Guides: https://hexdocs.pm/phoenix/overview.html
-  * Docs: https://hexdocs.pm/phoenix
-  * Forum: https://elixirforum.com/c/phoenix-forum
-  * Source: https://github.com/phoenixframework/phoenix
+Ready to run in production? Please [check the Phoenix deployment guides](https://hexdocs.pm/phoenix/deployment.html).
