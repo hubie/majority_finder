@@ -1,75 +1,81 @@
-[
-  {
-    "question": "This community understands and accepts the voting system for the show tonight.",
-    "answers": ["Yes", "No"],
-    "time_limit": 10
-  },
-  {
-    "question": "This community wishes to ban all latecomers.",
-    "answers": ["Yes", "No"]
-  },
-  {
-    "question": "This community is male.",
-    "answers": ["Yes", "No"]
-  },
-  {
-    "question": "This community is white.",
-    "answers": ["Yes", "No"]
-  },
-  {
-    "question": "This community is pro-choice.",
-    "answers": ["Yes", "No"]
-  },
-  {
-    "question": "This community believes in the death penalty.",
-    "answers": ["Yes", "No"]
-  },
-  {
-    "question": "This community believes in God.",
-    "answers": ["Yes", "No"]
-  },
-  {
-    "question": "This community believes in absolute freedom of speech.",
-    "answers": ["Yes", "No"]
-  },
-  {
-    "question": "This community believes they can make a difference.",
-    "answers": ["Yes", "No"]
-  },
-  {
-    "question": "This community believes that Scotland should be an independent country.",
-    "answers": ["Yes", "No"]
-  },
-  {
-    "question": "This community would push the lever.",
-    "answers": ["Yes", "No"]
-  },
-  {
-    "question": "This community would push the fat man to his death.",
-    "answers": ["Yes", "No"]
-  },
-  {
-    "question": "This community would push the lever.",
-    "answers": ["Yes", "No"]
-  },
-  {
-    "question": "This community would push the lever (and save the five Nazi lives).",
-    "answers": ["Yes", "No"]
-  },
-  {
-    "question": "This community believes that we should punish the minority by not giving them a toilet break.",
-    "answers": ["Yes", "No"]
-  },
-  {
-    "question": "This community believes that the UK should leave the EU.",
-    "answers": ["Yes", "No"]
-  },
-  {
-    "question": "This community believes the letter should be read.",
-    "answers": ["Yes", "No"]
-  },
-  {
-    "question": "This community believes that attacking someone for holding an opinion is a helpful thing to do.",
-    "answers": ["Yes", "No"]
-  }
-]
+[{
+  "question": "This community understands and accepts the voting system for the show tonight.",
+  "answers": ["Yes", "No"],
+  "time_limit": 10
+}, {
+  "question": "This community is liberal.",
+  "answers": ["Yes", "No"],
+  "time_limit": 10
+}, {
+  "question": "This community is male.",
+  "answers": ["Yes", "No"],
+  "time_limit": 10
+}, {
+  "question": "This community is white.",
+  "answers": ["Yes", "No"],
+  "time_limit": 10
+}, {
+  "question": "This community is pro-choice.",
+  "answers": ["Yes", "No"],
+  "time_limit": 10
+}, {
+  "question": "This community believes in the death penalty.",
+  "answers": ["Yes", "No"],
+  "time_limit": 10
+}, {
+  "question": "This community believes God is real.",
+  "answers": ["Yes", "No"],
+  "time_limit": 10
+}, {
+  "question": "This community believes the Covid-19 Pandemic is real.",
+  "answers": ["Yes", "No"],
+  "time_limit": 10
+}, {
+  "question": "This community believes in absolute freedom of speech.",
+  "answers": ["Yes", "No"],
+  "time_limit": 10
+}, {
+  "question": "This community believes they can make a difference.",
+  "answers": ["Yes", "No"],
+  "time_limit": 10
+}, {
+  "question": "This community believes the result of the Scottish independence referendum of 2014 was a good thing.",
+  "answers": ["Yes", "No"],
+  "time_limit": 10
+}, {
+  "question": "This community would push the lever.",
+  "answers": ["Yes", "No"],
+  "time_limit": 10
+}, {
+  "question": "This community would push the fat man to his death",
+  "answers": ["Yes", "No"],
+  "time_limit": 10
+}, {
+  "question": "This community would push the lever.",
+  "answers": ["Yes", "No"],
+  "time_limit": 10
+}, {
+  "question": "This community would push the lever (and save the Nazi.)",
+  "answers": ["Yes", "No"],
+  "time_limit": 10
+}, {
+  "question": "This community wants to reply to Ralph Weiss.",
+  "answers": ["Yes", "No"],
+  "time_limit": 10
+}, {
+  "question": "This community believes that people with abhorrent views deserve respect.",
+  "answers": ["Yes", "No"],
+  "time_limit": 10
+}, {
+  "question": "This community believes that we should derail the show so the minority can be more comfortable.",
+  "answers": ["Yes", "No"],
+  "time_limit": 10
+}, {
+  "question": "This community believes the UK should have remained in the EU.",
+  "answers": ["Yes", "No"],
+  "time_limit": 10
+}, {
+  "question": "This community believes this letter should remain unread.",
+  "answers": ["Yes", "No"],
+  "time_limit": 10
+}]
