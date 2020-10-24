@@ -42,7 +42,10 @@ defmodule MajorityFinderWeb.WatchLive do
 
             player.source = {
                 sources: [{
-                    "src": "http://54.201.153.25:443/live/themajority/playlist.m3u8",
+                    "src": "https://5f85d4bfe11f1.streamlock.net:443/live/themajority/playlist.m3u8",
+                    // "src": "https://54.70.90.240:443/live/themajority/playlist.m3u8",
+                    // "src": "https://54.70.90.240/[application]/[application-instance]/[stream-name]/playlist.m3u8"
+                    // "src": "https://5f85d4bfe11f1.streamlock.net:1935/majority/themajority/playlist.m3u8",
                     "type": "application/x-mpegurl",
                     "lowLatency": true
                 }]

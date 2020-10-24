@@ -33,8 +33,8 @@ defmodule MajorityFinder.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
-      {:phoenix, "~> 1.5.1"},
-      {:phoenix_live_view, "~> 0.14.2"},
+      {:phoenix, "~> 1.5.6"},
+      {:phoenix_live_view, "~> 0.14.7"},
       {:floki, ">= 0.0.0", only: :test},
       {:phoenix_html, "~> 2.11"},
       {:phoenix_live_reload, "~> 1.2", only: :dev},
