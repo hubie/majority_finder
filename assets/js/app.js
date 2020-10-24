@@ -16,6 +16,8 @@ import "phoenix_html"
 import {Socket} from "phoenix"
 import NProgress from "nprogress"
 import {LiveSocket} from "phoenix_live_view"
+// import adapter from 'webrtc-adapter';
+
 
 require("chartkick")
 require("chart.js")

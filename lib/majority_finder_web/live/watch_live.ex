@@ -25,6 +25,10 @@ defmodule MajorityFinderWeb.WatchLive do
 
   def render(assigns) do
     ~L"""
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha256-4+XzXVhsDmqanXGHaHvgh1gMQKX40OUvDEBTu8JcmNs=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@2.2.1/src/js.cookie.js" integrity="sha256-P8jY+MCe6X2cjNSmF4rQvZIanL5VwUUT4MBnOMncjRU=" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://webrtchacks.github.io/adapter/adapter-latest.js"></script>
 
     <%= live_component(
       @socket,
@@ -33,29 +37,10 @@ defmodule MajorityFinderWeb.WatchLive do
     %>
     <div display="flex">
       <div phx-update="ignore" class="videopanel">
-        <div phx-update="ignore" class="theoplayer-container video-js theoplayer-skin vjs-16-9"></div>
-          <script phx-update="ignore">
-            var element = document.querySelector(".theoplayer-container");
-            var player = new THEOplayer.Player(element, {
-                libraryLocation: "https://cdn.myth.theoplayer.com/1230daef-f515-4df9-b106-eacd30822514"
-            });
+        <div phx-update="ignore" id="play-video-container">
+          <video id="player-video" width="100%" autoplay playsinline controls></video>
+        </div>
 
-            player.source = {
-                sources: [{
-                    "src": "https://5f85d4bfe11f1.streamlock.net:443/live/themajority/playlist.m3u8",
-                    // "src": "https://54.70.90.240:443/live/themajority/playlist.m3u8",
-                    // "src": "https://54.70.90.240/[application]/[application-instance]/[stream-name]/playlist.m3u8"
-                    // "src": "https://5f85d4bfe11f1.streamlock.net:1935/majority/themajority/playlist.m3u8",
-                    "type": "application/x-mpegurl",
-                    "lowLatency": true
-                }]
-
-            };
-
-            player.autoplay = false;
-            player.preload = 'auto';
-          </script>
-      </div>
       <%= if @vote_here do %>
         <div class="votepanel">
           <iframe class="embeddedvote" src="/vote?embed=true">
