@@ -32,7 +32,7 @@ defmodule MajorityFinder.Results do
   def handle_cast(:reset_results, state) do
     new_state = archive_results(state)
     broadcast_voting_closed()
-    broadcast_results(new_state.results)
+    # broadcast_results(%{}, new_state.results)
     {:noreply, new_state}
   end
 
@@ -44,7 +44,7 @@ defmodule MajorityFinder.Results do
     new_question = GenServer.call(Questions, %{get_question: id})
     clean_results = Map.new(new_question.answers, fn a -> {a, 0} end)
     broadcast_question(new_question)
-    broadcast_results(clean_results)
+    broadcast_results(new_question, clean_results)
     {:noreply, %{state | results: clean_results, question: new_question, ballots: %{}}}
   end
 
@@ -68,7 +68,7 @@ defmodule MajorityFinder.Results do
     cond do
       votes_for_voter < @max_votes ->
         new_state = tally_vote(ballot, state)
-        broadcast_results(new_state.results)
+        broadcast_results(state.question, new_state.results)
         if votes_for_voter + 1 < @max_votes do
           {:reply, %{voter_state: :new_question}, new_state}
         else
@@ -121,14 +121,15 @@ defmodule MajorityFinder.Results do
 
   defp archive_results(%{results: results, question: question, archived_results: archived_results} = state) do
     new_archive = Map.put(archived_results, question.id, %{results: results, question: question})
+    IO.inspect({"RESULT_ARCHIVE", new_archive})
     %{state | results: %{}, question: %{}, archived_results: new_archive}
   end
 
-  defp broadcast_results(results) do
+  defp broadcast_results(question, results) do
     Phoenix.PubSub.broadcast(
       MajorityFinder.PubSub,
       @resultsTopic,
-      {__MODULE__, %{results: results}}
+      {__MODULE__, %{question: question, results: results}}
     )
   end
 

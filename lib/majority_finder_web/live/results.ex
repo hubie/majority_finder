@@ -25,11 +25,12 @@ defmodule MajorityFinderWeb.Results do
 
   end
 
-  def handle_info({Results, %{results: results} = stuff}, socket) do
+  def handle_info({Results, %{question: question, results: results} = stuff}, socket) do
     IO.inspect(["LOL", stuff])
     new_socket = push_event(socket, "new_results", %{data: formatResults(results)})
 
-    {:noreply, update(new_socket, :state, &Map.put(&1, :results, results))}
+    new_state = %{new_socket.state | results: results, question: question}
+    {:noreply, update(new_socket, :state, new_state)}
   end
 
   defp formatResults(results) do
