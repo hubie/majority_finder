@@ -14,13 +14,19 @@ defmodule MajorityFinderWeb.Results do
   def mount(params, _session, socket) do
     if connected?(socket), do: subscribe()
 
-    %{question: %{question: question}, results: results} = Results.get_current_results()
-    new_socket = push_event(socket, "new_results", %{data: formatResults(results)})
+    case Results.get_current_results() do
+      %{question: %{question: question}, results: results} ->
+        new_socket = push_event(socket, "new_results", %{data: formatResults(results)})
+        {:ok, assign(new_socket, :state, %{question: question, results: results, params: params})}
+      %{question: %{}, results: %{}} ->
+        new_socket = push_event(socket, "new_results", %{data: %{}})
+        {:ok, assign(new_socket, :state, %{question: %{}, results: %{}, params: params})}
+    end
 
-    {:ok, assign(new_socket, :state, %{question: question, results: results, params: params})}
   end
 
   def handle_info({Results, %{results: results} = stuff}, socket) do
+    IO.inspect(["LOL", stuff])
     new_socket = push_event(socket, "new_results", %{data: formatResults(results)})
 
     {:noreply, update(new_socket, :state, &Map.put(&1, :results, results))}

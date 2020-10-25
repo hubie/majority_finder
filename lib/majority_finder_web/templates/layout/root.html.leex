@@ -9,14 +9,16 @@
     <link rel="stylesheet" href="<%= Routes.static_path(@conn, "/css/app.css") %>"/>
     <script defer type="text/javascript" src="<%= Routes.static_path(@conn, "/js/app.js") %>"></script>
 
+    <script src="https://kit.fontawesome.com/8595d53fc2.js" crossorigin="anonymous"></script>
+
     <!-- Needed for /watch  TODO: Scope these better so they're not included in /vote -->
-    <!-- Chromecast SDK -->
+<%#     <!-- Chromecast SDK -->
     <script type="text/javascript" src="//www.gstatic.com/cv/js/sender/v1/cast_sender.js?loadCastFramework=1"></script>
 
     <!-- THEOplayer library and css -->
     <script type="text/javascript" src="https://cdn.myth.theoplayer.com/1230daef-f515-4df9-b106-eacd30822514/THEOplayer.js"></script>
     <link rel="stylesheet" type="text/css" href="https://cdn.myth.theoplayer.com/1230daef-f515-4df9-b106-eacd30822514/ui.css" />
-  </head>
+ %>  </head>
   <body>
     <%= @inner_content %>
   </body>
