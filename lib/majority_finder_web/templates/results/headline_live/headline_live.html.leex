@@ -2,21 +2,21 @@
   <%= case @state.question do %>
     <% %{} -> %>
     <% _ -> %>
-      <div class="question">
-        <%= @state.question %>
-      </div>
-      <div class="results headline answers">
-        <%= for {answer, result} <- @state.results do %>
-          <div class="results headline answerset">
-            <div class="results headline answer" answer="<%= answer %>">
-              <%= answer %>
+        <div class="results headline question">
+          <%= @state.question %>
+        </div>
+        <div class="results headline answers">
+          <%= for {answer, result} <- @state.results do %>
+            <div class="results headline answerset">
+              <div class="results headline answer" answer="<%= answer %>">
+                <%= answer %>
+              </div>
+              <div class="results headline result">
+                <%= result %>
+              </div>
             </div>
-            <div class="results headline result">
-              <%= result %>
-            </div>
-          </div>
-        <% end %>
-      </div>
+          <% end %>
+        </div>
   <% end %>
 
 </div>

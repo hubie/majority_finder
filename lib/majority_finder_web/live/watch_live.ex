@@ -52,7 +52,7 @@ defmodule MajorityFinderWeb.WatchLive do
       <div class="videopanel">
         <%= case @video_player do %>
           <% :legacy -> %>
-            <div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/472032820" frameborder="0" allow="autoplay; fullscreen" allowfullscreen style="position:absolute;top:0;left:0;width:100%;height:100%;"></iframe></div>
+            <div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://vimeo.com/event/410348/embed/19085f7088" frameborder="0" allow="autoplay; fullscreen" allowfullscreen style="position:absolute;top:0;left:0;width:100%;height:100%;"></iframe></div>
             <div>
               <button phx-click="video_player" value="webrtc">Low Latency Player</button>
             </div>
