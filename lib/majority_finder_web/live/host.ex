@@ -94,7 +94,7 @@ defmodule MajorityFinderWeb.Host do
     </div>
     <div>
       <%= f = form_for :question_select, "#", [phx_change: :validate, phx_submit: :save] %>
-        <%= select f, :question, Enum.map(Enum.with_index(@questions), fn {%{question: q}, i} -> {"Q#{i}: #{q}", i} end), [class: "host question-select", size: "6"] %>
+        <%= select f, :question, Enum.map(Enum.with_index(@questions), fn {%{question: q}, i} -> {"Q#{i+1}: #{q}", i} end), [class: "host question-select", size: "6"] %>
         <div>
           <%= submit "Submit Question" %>
         </div>
