@@ -104,11 +104,18 @@ select {
   line-height: 125%;
   font-size: 8rem;
   font-weight: bold;
-  font-family: "arial-black", sans-serif;
+  font-family: "futura", sans-serif;
+  font-weight: 9000;
+  -webkit-text-stroke-color: black;
+}
+
+.results.headline.question {
+  -webkit-text-stroke-width: .2rem;
 }
 
 .results.headline.answers {
   display: inline;
+  -webkit-text-stroke-width: .4rem;
 }
 
 .results.headline.answerset {
