@@ -13,7 +13,7 @@ config :majority_finder, MajorityFinderWeb.Endpoint,
   url: [host: "themajority.live"],
   cache_static_manifest: "priv/static/cache_manifest.json",
   force_ssl: [rewrite_on: [:x_forwarded_proto]],
-  check_origin: ["//themajority.live", '//www.themajority.live", "//majorityfinder.gigalixirapp.com", "//www.majorityfinder.gigalixirapp.com"]
+  check_origin: ["//themajority.live", "//www.themajority.live", "//majorityfinder.gigalixirapp.com", "//www.majorityfinder.gigalixirapp.com"]
 
 # Do not print debug messages in production
 config :logger, level: :info
