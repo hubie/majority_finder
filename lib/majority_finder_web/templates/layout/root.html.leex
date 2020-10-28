@@ -11,6 +11,11 @@
 
     <script src="https://kit.fontawesome.com/8595d53fc2.js" crossorigin="anonymous"></script>
 
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon/favicon-16x16.png">
+    <link rel="manifest" href="/images/favicon/site.webmanifest">
+
     <!-- Needed for /watch  TODO: Scope these better so they're not included in /vote -->
 <%#     <!-- Chromecast SDK -->
     <script type="text/javascript" src="//www.gstatic.com/cv/js/sender/v1/cast_sender.js?loadCastFramework=1"></script>
@@ -20,6 +25,35 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.myth.theoplayer.com/1230daef-f515-4df9-b106-eacd30822514/ui.css" />
  %>  </head>
   <body>
+    <!--
+##    ##  #######  ##     ## #### ########  ########             ###             ########  #### ########
+ ##  ##  ##     ## ##     ## #### ##     ## ##                  ## ##            ##     ##  ##     ##
+  ####   ##     ## ##     ##  ##  ##     ## ##                 ##   ##           ##     ##  ##     ##
+   ##    ##     ## ##     ## ##   ########  ######            ##     ##          ########   ##     ##
+   ##    ##     ## ##     ##      ##   ##   ##                #########          ##     ##  ##     ##
+   ##    ##     ## ##     ##      ##    ##  ##                ##     ##          ##     ##  ##     ##
+   ##     #######   #######       ##     ## ########          ##     ##          ########  ####    ##
+
+
+
+##    ##  #######   ######  ######## ##    ##                  ###    ########  ######## ##    ## #### ########          ##    ##    ###     #######
+###   ## ##     ## ##    ## ##        ##  ##                  ## ##   ##     ## ##       ###   ## ####    ##              ##  ##    ## ##   ##     ##
+####  ## ##     ## ##       ##         ####                  ##   ##  ##     ## ##       ####  ##  ##     ##               ####    ##   ##        ##
+## ## ## ##     ##  ######  ######      ##    ####          ##     ## ########  ######   ## ## ## ##      ##                ##    ##     ##     ###
+##  #### ##     ##       ## ##          ##    ####          ######### ##   ##   ##       ##  ####         ##                ##    #########    ##
+##   ### ##     ## ##    ## ##          ##     ##           ##     ## ##    ##  ##       ##   ###         ##                ##    ##     ##
+##    ##  #######   ######  ########    ##    ##            ##     ## ##     ## ######## ##    ##         ##                ##    ##     ##    ##
+
+
+Majority Finder is, was, and will be written by David 'Hubie' Huebner (github.com/hubie) and one day (hopefully) others.
+It begged to be written in Phoenix LiveView (https://hexdocs.pm/phoenix_live_view/Phoenix.LiveView.html) and who am I to stand in its way?
+I'm not going to lie – at a certain point along this journey of learning the framework, discovering requirements, and running out of time,
+this project changed from one of ideals into one making-it-happen.  There's certainly things in here that I'm not proud of.
+The concept of this app though – allowing audiences both remote and in person – to participate in live shows has a lot of merit, espeically
+in these COVID times.  It is my intention to take the my learnings and rewrite this app so that live events of all sorts – Theatre, Improv,
+Comedy, and even Webinars, classes, and quizzes can make use of it.  If you're interested in helping, (and I could obviously use some help
+on the front end 🙃), want to chat about functional programming, or just feel like it, drop me a line and let's chat!
+-->
     <%= @inner_content %>
   </body>
 </html>

@@ -83,31 +83,39 @@ defmodule MajorityFinderWeb.VoterLive do
 
   def render(assigns) do
     ~L"""
-    <%=
-      if !@embed, do: 
-      live_component(
-      @socket,
-      MajorityFinderWeb.Components.TitleComponent
-      )
-    %>
     <div>
-      <h1> <%=
-        case @show_mode do
-          :preshow -> "HI!  Welcome!"
-          :show ->
-            case @voter_state do
-              :preshow -> "Welcome!  The show will start shortly!"
-              :voting_closed -> "Standby..."
-              :voted -> "Thanks for voting!"
-              :new_question ->
-                question = @question
-                live_component(@socket, MajorityFinderWeb.Components.QuestionComponent, question: question)
-              _ -> "Unknown state: #{@voter_state}"
-            end
-          :postshow -> "Have a good night!"
-          _ -> "Unknown show state #{@show_mode}"
-        end
-      %>
+      <h1>
+      <%=
+        case @show_mode do %>
+        <%= :preshow -> %>
+          <h2>You're in the right place!</h2>
+          <p/>
+          The Majority is an interactive show.  You will be asked for your thoughts on a number of topics.  You will be prompted – right here! – to give your answer.
+          <p/>
+          The Majority opens this Friday, October 30th and runs though November 14th.<br/>
+          Visit <a href="http://www.theatreb.org/the-majority">Theatre B's Website</a> for tickets and more information.
+
+        <%= :show -> %>
+          <%= case @voter_state do %>
+            <%= :voting_closed -> %>
+              <span class="ellipsis-anim"><span>.</span><span>.</span><span>.</span>
+            <%= :voted -> %>
+                Thank you for voting.<br/>
+                The Majority opens this Friday, October 30th and runs though November 14th.<br/>
+                Visit <a href="http://www.theatreb.org/the-majority">Theatre B's Website</a> for tickets and more information.
+            <%= :new_question -> %>
+              <%= question = @question
+                live_component(@socket, MajorityFinderWeb.Components.QuestionComponent, question: question) %>
+              <%= _ -> %>
+                <%= "Unknown state: #{@voter_state}" %>
+            <% end %>
+          <%= :postshow -> %>
+              We hope you enjoyed this little preview!<br/>
+              The Majority opens this Friday, October 30th and runs though November 14th.<br/>
+              Visit <a href="http://www.theatreb.org/the-majority">Theatre B's Website</a> for tickets and more information.
+          <%= _ ->  %>
+          <%= "Unknown show state #{@show_mode}" %>
+        <% end %>
     </div>
     """
   end

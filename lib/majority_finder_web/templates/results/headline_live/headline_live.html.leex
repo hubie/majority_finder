@@ -1,9 +1,8 @@
 <div class="results headline">
   <%= case @state.question do %>
-    <% %{} -> %>
-    <% _ -> %>
+    <% %{question: question} -> %>
         <div class="results headline question">
-          <%= @state.question %>
+          <%= @state.question.question %>
         </div>
         <div class="results headline answers">
           <%= for {answer, result} <- @state.results do %>
@@ -17,6 +16,7 @@
             </div>
           <% end %>
         </div>
+    <% %{} -> %>
   <% end %>
 
 </div>

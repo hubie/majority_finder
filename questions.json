@@ -78,4 +78,8 @@
   "question": "This community believes this letter should remain unread.",
   "answers": ["Yes", "No"],
   "time_limit": 10
-}]
+}, {
+  "question": "Who would you like to meet?  Robbie's parents or Robbie's friend Eric?",
+  "answers": ["Parents", "Eric"]
+}
+]

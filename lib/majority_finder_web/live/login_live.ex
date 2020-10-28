@@ -13,8 +13,8 @@ defmodule MajorityFinderWeb.LoginLive do
         <fieldset class="flex flex-col md:w-full">
 
           <div>
-            <%= text_input f, :validation_code, [class: "password-box text-white focus:border focus:border-b-0 rounded border", placeholder: "Enter your validation code", aria_required: "true"] %>
-            <label for="form_email">Validation Code</label>
+            <%= text_input f, :validation_code, [class: "password-box text-white focus:border focus:border-b-0 rounded border", placeholder: "Access Code", aria_required: "true"] %>
+            <label for="form_email">Access Code</label>
           </div>
           <%= submit "Login", [class: "w-full text-white bg-shop-green uppercase font-bold text-lg p-2 rounded"] %>
         </fieldset>
