@@ -119,10 +119,15 @@ defmodule MajorityFinder.Results do
     new_state
   end
 
-  defp archive_results(%{results: results, question: question, archived_results: archived_results} = state) do
-    new_archive = Map.put(archived_results, question.id, %{results: results, question: question})
-    IO.inspect({"RESULT_ARCHIVE", new_archive})
+  defp archive_results(%{results: results, question: %{question: question, id: id}, archived_results: archived_results} = state) do
+    new_archive = Map.put(archived_results, id, %{results: results, question: question})
+    IO.inspect([new_archive, label: "RESULT_ARCHIVE"])
     %{state | results: %{}, question: %{}, archived_results: new_archive}
+  end
+
+  defp archive_results(state) do
+    IO.inspect(state, label: "Invalid archive_results request")
+    state
   end
 
   defp broadcast_results(question, results) do
