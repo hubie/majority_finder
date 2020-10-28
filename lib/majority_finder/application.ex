@@ -15,8 +15,8 @@ defmodule MajorityFinder.Application do
       MajorityFinderWeb.Endpoint,
       # Start a worker by calling: MajorityFinder.Worker.start_link(arg)
       MajorityFinder.Presence,
-      {MajorityFinder.Results, [name: MajorityFinder.Results]},
-      {MajorityFinder.Metrics, [name: MajorityFinder.Metrics]},
+      {MajorityFinder.ResultsSupervisor, [name: MajorityFinder.ResultsSupervisor]},
+      # {MajorityFinder.Metrics, [name: MajorityFinder.Metrics]},
       {MajorityFinder.Questions, [name: MajorityFinder.Questions]}
     ]
 
