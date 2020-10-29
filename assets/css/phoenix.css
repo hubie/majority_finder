@@ -86,6 +86,11 @@ select {
   font-size: 3rem;
 }
 
+.fas.fa-vote-yea.vote-counted {
+  font-size: 10rem;
+  color: #62fc65;
+}
+
 /*.voter.answers button {
   font-size: 4rem;
 }

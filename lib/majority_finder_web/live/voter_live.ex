@@ -98,9 +98,9 @@ defmodule MajorityFinderWeb.VoterLive do
             <%= :voting_closed -> %>
                   The proposition is<span class="ellipsis-anim"><span>.</span><span>.</span><span>.</span>
             <%= :voted -> %>
-                Thank you for voting.<br/>
-                The Majority opens this Friday, October 30th and runs though November 14th.<br/>
-                Visit <a href="http://www.theatreb.org/the-majority">Theatre B's Website</a> for tickets and more information.
+                Your vote has been counted!
+                <br/>
+                <i class="fas fa-vote-yea vote-counted"></i>
             <%= :new_question -> %>
               <%= question = @question
                 live_component(@socket, MajorityFinderWeb.Components.QuestionComponent, question: question) %>
