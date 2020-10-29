@@ -6,7 +6,7 @@ defmodule MajorityFinderWeb.WatchLive do
   @initial_store %{
     key: nil,
     vote_here: :instructions,
-    video_player: :webrtc
+    video_player: :vimeo
   }
 
   def handle_event("voteHere", %{"value" => voteType} = _value, socket) do
@@ -29,42 +29,16 @@ defmodule MajorityFinderWeb.WatchLive do
   end
 
 
-  def mount(_params, %{"session_uuid" => key} = _session, socket) do
+  def mount(params, %{"session_uuid" => key} = _session, socket) do
     {:ok, assign(socket, %{@initial_store |
-      key: key
+      key: key,
+      video_player: String.to_atom(Map.get(params, "player", "vimeo"))
       })
     }
   end
 
   def render(assigns) do
     ~L"""
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha256-4+XzXVhsDmqanXGHaHvgh1gMQKX40OUvDEBTu8JcmNs=" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/js-cookie@2.2.1/src/js.cookie.js" integrity="sha256-P8jY+MCe6X2cjNSmF4rQvZIanL5VwUUT4MBnOMncjRU=" crossorigin="anonymous"></script>
-    <script type="text/javascript" src="https://webrtchacks.github.io/adapter/adapter-latest.js"></script>
-
-    <%= live_component(
-      @socket,
-      MajorityFinderWeb.Components.TitleComponent
-      )
-    %>
-    <div display="flex">
-      <div class="videopanel">
-        <%= case @video_player do %>
-          <% :legacy -> %>
-            <div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://vimeo.com/event/410348/embed/19085f7088" frameborder="0" allow="autoplay; fullscreen" allowfullscreen style="position:absolute;top:0;left:0;width:100%;height:100%;"></iframe></div>
-            <div>
-              <button phx-click="video_player" value="webrtc">Low Latency Player</button>
-            </div>
-          <% # WebRTC player & default %>
-          <% _ -> %>
-            <video id="player-video" width="100%" autoplay playsinline controls></video>
-            <div>
-              <button phx-click="video_player" value="legacy">Legacy Player (High Latency)</div>
-            </div>
-        <% end %>
-      </div>
-
       <div>
         <%= case @vote_here do %>
           <% true -> %>
@@ -91,7 +65,6 @@ defmodule MajorityFinderWeb.WatchLive do
             </div>
         <% end %>
       </div>
-    </div>
     """
   end
 end

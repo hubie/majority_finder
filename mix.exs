@@ -46,7 +46,8 @@ defmodule MajorityFinder.MixProject do
       {:plug_cowboy, "~> 2.0"},
       {:elixir_uuid, "~> 1.2"},
       {:bodyguard, "~> 2.4"},
-      {:cors_plug, "~> 2.0"}
+      {:cors_plug, "~> 2.0"},
+      {:plug_canonical_host, "~> 2.0"}
     ]
   end
 

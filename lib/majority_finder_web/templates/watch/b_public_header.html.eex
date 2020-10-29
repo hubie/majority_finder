@@ -1,0 +1,10 @@
+<header>
+  <section class="container">
+    <div>
+    </div>
+    <a href="https://www.theatreb.org/" class="b-logo">
+      <img src="/images/b_logo_white.png" alt="Theatre B Logo"/>
+    </a>
+    <h1>The Majority</h1>
+  </section>
+</header>

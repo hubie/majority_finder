@@ -23,7 +23,7 @@ pre{padding: 1em;}
 
 .container{
   margin: 0 auto;
-  max-width: 80.0rem;
+  /*max-width: 80.0rem;*/
   padding: 0 2.0rem;
   position: relative;
   width: 100%;
@@ -166,9 +166,10 @@ select {
 
 .embeddedvote {
   border: 0;
-   height: 100%;
+   height: 60rem;
    left: 0;
-   position: absolute;
+   overflow-y: hidden;
+   /*position: absolute;*/
    top: 0;
    width: 100%;
 }

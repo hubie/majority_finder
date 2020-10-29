@@ -3,10 +3,21 @@ defmodule MajorityFinderWeb.Router do
   # alias MajorityFinderWeb.Session
   import MajorityFinderWeb.Plug.Session, only: [redirect_unauthorized: 2, validate_session: 2]
 
-  pipeline :browser do
+  pipeline :livebrowser do
     plug :accepts, ["html"]
     plug :fetch_session
     plug :fetch_live_flash
+    plug :put_root_layout, {MajorityFinderWeb.LayoutView, :root}
+    plug :protect_from_forgery
+    plug :put_secure_browser_headers
+    plug :validate_session
+    plug CORSPlug, origin: ["http://theatreb.org", "https://theatreb.org"]
+  end
+
+  pipeline :browser do
+    plug :accepts, ["html"]
+    plug :fetch_session
+    plug :fetch_flash
     plug :put_root_layout, {MajorityFinderWeb.LayoutView, :root}
     plug :protect_from_forgery
     plug :put_secure_browser_headers
@@ -27,7 +38,7 @@ defmodule MajorityFinderWeb.Router do
   end
 
   scope "/", MajorityFinderWeb do
-    pipe_through :browser
+    pipe_through :livebrowser
 
     live "/login", LoginLive, :index
 
@@ -35,17 +46,23 @@ defmodule MajorityFinderWeb.Router do
   end
 
   scope "/", MajorityFinderWeb do
-    pipe_through [:browser, :admin]
+    pipe_through [:livebrowser, :admin]
     live("/results", Results)
     live("/results/:view", Results)
     live("/host", Host)
   end
 
   scope "/", MajorityFinderWeb do
+    pipe_through [:livebrowser, :voter]
+
+
+    live "/vote", VoterLive, :index
+  end
+
+  scope "/", MajorityFinderWeb do
     pipe_through [:browser, :voter]
 
-    live "/watch", WatchLive, :index
-    live "/vote", VoterLive, :index
+    get "/watch", WatchController, :index
   end
 
   # Other scopes may use custom stacks.
