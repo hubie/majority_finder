@@ -90,15 +90,13 @@ defmodule MajorityFinderWeb.VoterLive do
         <%= :preshow -> %>
           <h2>You're in the right place!</h2>
           <p/>
-          The Majority is an interactive show.  You will be asked for your thoughts on a number of topics.  You will be prompted – right here! – to give your answer.
-          <p/>
-          The Majority opens this Friday, October 30th and runs though November 14th.<br/>
-          Visit <a href="http://www.theatreb.org/the-majority">Theatre B's Website</a> for tickets and more information.
+          The Majority is an interactive show.  You will be asked for your thoughts on a number of topics.
+          When a question appears on this page, place your vote using the buttons that will appear.
 
         <%= :show -> %>
           <%= case @voter_state do %>
             <%= :voting_closed -> %>
-              <span class="ellipsis-anim"><span>.</span><span>.</span><span>.</span>
+                  The proposition is<span class="ellipsis-anim"><span>.</span><span>.</span><span>.</span>
             <%= :voted -> %>
                 Thank you for voting.<br/>
                 The Majority opens this Friday, October 30th and runs though November 14th.<br/>

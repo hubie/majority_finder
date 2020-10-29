@@ -193,6 +193,34 @@ select {
     animation-delay: 1s;
 }
 
+.voteinstructions {
+  line-height: 3.2rem;
+}
+
+.voteinstructions.title {
+  font-size: 4rem;
+  font-style: bold;
+  font-family: "arial black";
+  margin-bottom: 2rem;
+}
+
+.voteinstructions.instructions {
+  font-size: 3rem;
+}
+
+.voteinstructions.instructions ol {
+  margin-left: 2rem;
+  margin-top: 1rem;
+}
+
+.voteinstructions.votehere {
+  font-size: 1.8rem;
+  font-style: oblique;
+}
+.voteinstructions.votehere.link {
+  color: #0069d9;
+}
+
 @-webkit-keyframes ellipsis-dot {
       0% { opacity: 0; }
      50% { opacity: 1; }

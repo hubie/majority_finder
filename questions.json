@@ -1,85 +1,82 @@
 [{
   "question": "This community understands and accepts the voting system for the show tonight.",
   "answers": ["Yes", "No"],
-  "time_limit": 10
+  "time_limit": 25
 }, {
   "question": "This community is liberal.",
   "answers": ["Yes", "No"],
-  "time_limit": 10
+  "time_limit": 15
 }, {
   "question": "This community is male.",
   "answers": ["Yes", "No"],
-  "time_limit": 10
+  "time_limit": 15
 }, {
   "question": "This community is white.",
   "answers": ["Yes", "No"],
-  "time_limit": 10
+  "time_limit": 15
 }, {
   "question": "This community is pro-choice.",
   "answers": ["Yes", "No"],
-  "time_limit": 10
+  "time_limit": 15
 }, {
   "question": "This community believes in the death penalty.",
   "answers": ["Yes", "No"],
-  "time_limit": 10
+  "time_limit": 15
 }, {
   "question": "This community believes God is real.",
   "answers": ["Yes", "No"],
-  "time_limit": 10
+  "time_limit": 15
 }, {
   "question": "This community believes the Covid-19 Pandemic is real.",
   "answers": ["Yes", "No"],
-  "time_limit": 10
+  "time_limit": 15
 }, {
   "question": "This community believes in absolute freedom of speech.",
   "answers": ["Yes", "No"],
-  "time_limit": 10
+  "time_limit": 15
 }, {
   "question": "This community believes they can make a difference.",
   "answers": ["Yes", "No"],
-  "time_limit": 10
+  "time_limit": 15
 }, {
   "question": "This community believes the result of the Scottish independence referendum of 2014 was a good thing.",
   "answers": ["Yes", "No"],
-  "time_limit": 10
+  "time_limit": 15
 }, {
   "question": "This community would push the lever.",
   "answers": ["Yes", "No"],
-  "time_limit": 10
+  "time_limit": 15
 }, {
   "question": "This community would push the fat man to his death",
   "answers": ["Yes", "No"],
-  "time_limit": 10
+  "time_limit": 15
 }, {
   "question": "This community would push the lever.",
   "answers": ["Yes", "No"],
-  "time_limit": 10
+  "time_limit": 15
 }, {
   "question": "This community would push the lever (and save the Nazis.)",
   "answers": ["Yes", "No"],
-  "time_limit": 10
+  "time_limit": 15
 }, {
   "question": "This community wants to reply to Ralph Weiss.",
   "answers": ["Yes", "No"],
-  "time_limit": 10
+  "time_limit": 15
 }, {
   "question": "This community believes that people with abhorrent views deserve respect.",
   "answers": ["Yes", "No"],
-  "time_limit": 10
+  "time_limit": 15
 }, {
   "question": "This community believes that we should derail the show so the minority can be more comfortable.",
   "answers": ["Yes", "No"],
-  "time_limit": 10
+  "time_limit": 15
 }, {
   "question": "This community believes the UK should have remained in the EU.",
   "answers": ["Yes", "No"],
-  "time_limit": 10
+  "time_limit": 15
 }, {
   "question": "This community believes this letter should remain unread.",
   "answers": ["Yes", "No"],
-  "time_limit": 10
-}, {
-  "question": "Who would you like to meet?  Robbie's parents or Robbie's friend Eric?",
-  "answers": ["Parents", "Eric"]
+  "time_limit": 15
 }
 ]

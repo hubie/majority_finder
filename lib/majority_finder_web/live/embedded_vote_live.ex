@@ -1,4 +1,4 @@
-defmodule MajorityFinderWeb.WatchLive do
+defmodule MajorityFinderWeb.EmbeddedVoteLive do
   use Phoenix.LiveView
 
   alias MajorityFinder.Results
@@ -6,7 +6,6 @@ defmodule MajorityFinderWeb.WatchLive do
   @initial_store %{
     key: nil,
     vote_here: :instructions,
-    video_player: :vimeo
   }
 
   def handle_event("voteHere", %{"value" => voteType} = _value, socket) do
@@ -21,18 +20,9 @@ defmodule MajorityFinderWeb.WatchLive do
     {:noreply, new_socket}
   end
 
-  def handle_event("video_player", %{"value" => type} = _value, socket) do
-    new_socket = socket
-      |> update(:video_player, fn _ -> String.to_atom(type) end)
-
-    {:noreply, new_socket}
-  end
-
-
   def mount(params, %{"session_uuid" => key} = _session, socket) do
     {:ok, assign(socket, %{@initial_store |
-      key: key,
-      video_player: String.to_atom(Map.get(params, "player", "vimeo"))
+      key: key
       })
     }
   end
@@ -54,14 +44,23 @@ defmodule MajorityFinderWeb.WatchLive do
                 <i class="fas fa-vote-yea"></i>&nbsp;&nbsp;Register to vote!&nbsp;&nbsp;<i class="fas fa-vote-yea"></i>
               </div>
               <div class="voteinstructions instructions">
-                Use your cell phone, other mobile device, or another computer, go to <a href="/vote">theatreb.org/vote</a> and enter your access code
+                It's easy!
+                <ol>
+                  <li> Grab a smart phone, tablet, or another computer
+                  <li> Go to <a target="_parent" href="/vote">themajority.live/vote</a>
+                  <li> Enter your access code
+                </ol>
+                When it's time to vote, the question and choices will appear on the screen.  Then it's your turn!
               </div>
+              <br/>
               <div class="voteinstructions votehere">
-                If you don't have access to another device, you can also <button phx-click="voteHere" value="true" class="voteinstructions votehere">Vote Here</button>
+                If you don't have access to another device, you can also <a href="#" phx-click="voteHere" phx-value-value="true" class="voteinstructions votehere link">Vote by clicking Here</a>
               </div>
+              <!--
               <div class="voteinstructions close">
                 <button phx-click="voteHere" value="close" class="voteinstructions close">Close</button>
               </div>
+              -->
             </div>
         <% end %>
       </div>

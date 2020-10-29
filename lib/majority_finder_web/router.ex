@@ -42,7 +42,6 @@ defmodule MajorityFinderWeb.Router do
 
     live "/login", LoginLive, :index
 
-    live "/", VoterLive, :index
   end
 
   scope "/", MajorityFinderWeb do
@@ -55,13 +54,14 @@ defmodule MajorityFinderWeb.Router do
   scope "/", MajorityFinderWeb do
     pipe_through [:livebrowser, :voter]
 
-
+    live "/embeddedvote", EmbeddedVoteLive, :index
     live "/vote", VoterLive, :index
   end
 
   scope "/", MajorityFinderWeb do
     pipe_through [:browser, :voter]
 
+    get "/", WatchController, :index
     get "/watch", WatchController, :index
   end
 
