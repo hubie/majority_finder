@@ -20,7 +20,7 @@ defmodule MajorityFinder.MixProject do
   def application do
     [
       mod: {MajorityFinder.Application, []},
-      extra_applications: [:logger, :runtime_tools]
+      extra_applications: [:logger, :runtime_tools, :elixir_google_spreadsheets]
     ]
   end
 
@@ -47,7 +47,8 @@ defmodule MajorityFinder.MixProject do
       {:elixir_uuid, "~> 1.2"},
       {:bodyguard, "~> 2.4"},
       {:cors_plug, "~> 2.0"},
-      {:plug_canonical_host, "~> 2.0"}
+      {:plug_canonical_host, "~> 2.0"},
+      {:elixir_google_spreadsheets, "~> 0.1.17"}
     ]
   end
 

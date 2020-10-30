@@ -21,6 +21,8 @@ defmodule MajorityFinder.Application do
     ]
 
     :ets.new(:auth_table, [:set, :public, :named_table, read_concurrency: true])
+    :ets.new(:auth_codes, [:set, :public, :named_table, read_concurrency: true])
+    :ets.new(:auth_meta, [:set, :public, :named_table, read_concurrency: true])
 
     # See https://hexdocs.pm/elixir/Supervisor.html
     # for other strategies and supported options
