@@ -4,7 +4,7 @@ defmodule MajorityFinder.Results do
   alias MajorityFinder.Questions
 
   @initial_state %{
-    results: %{},
+    results: [],
     ballots: %{},
     question: %{},
     voter_count: nil,
@@ -42,7 +42,7 @@ defmodule MajorityFinder.Results do
         state
       ) do
     new_question = GenServer.call(Questions, %{get_question: id})
-    clean_results = Map.new(new_question.answers, fn a -> {a, 0} end)
+    clean_results = Enum.map(new_question.answers, fn a -> %{a => 0} end)
     broadcast_question(new_question)
     broadcast_results(new_question, clean_results)
     {:noreply, %{state | results: clean_results, question: new_question, ballots: %{}}}
@@ -114,15 +114,17 @@ defmodule MajorityFinder.Results do
   end
 
   defp tally_vote(%{voter_id: voter_id, vote_cast: vote}, state) do
-    {_, new_state} = get_and_update_in(state, [:results, vote], &{&1, (&1 || 0) + 1})
-    {_, new_state} = get_and_update_in(new_state, [:ballots, voter_id], &{&1, (&1 || []) ++ [vote]})
+    new_results = Enum.map(state.results, fn x -> if Map.has_key?(x, vote), do: %{vote => x[vote] + 1}, else: x end)
+    # {_, new_state} = get_and_update_in(state, [:results, vote], &{&1, (&1 || 0) + 1})
+    # {_, new_state} = get_and_update_in(new_state, [:ballots, voter_id], &{&1, (&1 || []) ++ [vote]})
+    new_state = %{state | results: new_results}
     new_state
   end
 
   defp archive_results(%{results: results, question: %{question: question, id: id}, archived_results: archived_results} = state) do
     new_archive = Map.put(archived_results, id, %{results: results, question: question})
     IO.inspect([new_archive, label: "RESULT_ARCHIVE"])
-    %{state | results: %{}, question: %{}, archived_results: new_archive}
+    %{state | results: [], question: %{}, archived_results: new_archive}
   end
 
   defp archive_results(state) do

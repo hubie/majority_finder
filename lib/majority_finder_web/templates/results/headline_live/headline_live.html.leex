@@ -5,7 +5,8 @@
           <%= @state.question.question %>
         </div>
         <div class="results headline answers">
-          <%= for {answer, result} <- @state.results do %>
+          <%= for resultSet <- @state.results,
+          {answer, result} <- resultSet do %>
             <div class="results headline answerset">
               <div class="results headline answer" answer="<%= answer %>">
                 <%= answer %>

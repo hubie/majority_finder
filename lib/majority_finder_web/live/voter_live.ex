@@ -91,8 +91,7 @@ defmodule MajorityFinderWeb.VoterLive do
           <h2>You're in the right place!</h2>
           <p/>
           The Majority is an interactive show.  You will be asked for your thoughts on a number of topics.
-          When a question appears on this page, place your vote using the buttons that will appear.
-
+          When it's time to place your vote, the proposition and choices will automatically appear – right on this page!
         <%= :show -> %>
           <%= case @voter_state do %>
             <%= :voting_closed -> %>
@@ -108,10 +107,10 @@ defmodule MajorityFinderWeb.VoterLive do
                 <%= "Unknown state: #{@voter_state}" %>
             <% end %>
           <%= :postshow -> %>
-              We hope you enjoyed this little preview!<br/>
-              The Majority opens this Friday, October 30th and runs though November 14th.<br/>
-              Visit <a href="http://www.theatreb.org/the-majority">Theatre B's Website</a> for tickets and more information.
-          <%= _ ->  %>
+              We hope you enjoyed the show!
+              <br/>To stay up to date with Theatre B, visit <a href="http://www.theatreb.org">theatreb.org</a>.
+              <br/>Visit us on Facebook at <a href="https://www.facebook.com/TheatreBFargo">@TheatreBFargo</a>
+         <%= _ ->  %>
           <%= "Unknown show state #{@show_mode}" %>
         <% end %>
     </div>

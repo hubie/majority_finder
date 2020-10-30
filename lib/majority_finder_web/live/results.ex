@@ -13,7 +13,7 @@ defmodule MajorityFinderWeb.Results do
 
   @initial_store %{
     question: %{},
-    results: %{},
+    results: [],
     params: %{}
   }
 
@@ -25,9 +25,9 @@ defmodule MajorityFinderWeb.Results do
       %{question: %{question: question}, results: results} ->
         new_socket = push_event(socket, "new_results", %{data: formatResults(results)})
         {:ok, assign(new_socket, :state, %{question: %{question: question}, results: results, params: params})}
-      %{question: %{}, results: %{}} ->
+      %{question: %{}, results: []} ->
         new_socket = push_event(socket, "new_results", %{data: %{}})
-        {:ok, assign(new_socket, :state, %{question: %{}, results: %{}, params: params})}
+        {:ok, assign(new_socket, :state, %{question: %{}, results: [], params: params})}
       cr ->
         IO.inspect(["Unexpected current results: ", cr])
     end
@@ -46,7 +46,6 @@ defmodule MajorityFinderWeb.Results do
   end
 
   def render(assigns) do
-    IO.inspect(assigns)
     case assigns.state.params do
       %{"view" => "headline"} ->
         Phoenix.View.render(MajorityFinderWeb.Results.HeadlineLive, "headline_live.html", assigns)
