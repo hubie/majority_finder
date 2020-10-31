@@ -9,7 +9,8 @@ defmodule MajorityFinder.Results do
     question: %{},
     voter_count: nil,
     show_mode: :show,
-    archived_results: %{}
+    archived_results: %{},
+    gsheet_archive_pid: nil
   }
 
   @max_votes 1
@@ -25,7 +26,14 @@ defmodule MajorityFinder.Results do
 
   @impl true
   def init(_state) do
-    {:ok, @initial_state}
+    state = case GSS.Spreadsheet.Supervisor.spreadsheet(System.get_env("VOTE_ARCHIVE_SHEET_ID", "")) do
+      {:ok, pid} ->
+        %{@initial_state | gsheet_archive_pid: pid}
+      e ->
+        IO.inspect(["Error initializing Archive Google Sheet, going without it", e])
+        @initial_state
+    end
+    {:ok, state}
   end
 
   @impl true
@@ -41,6 +49,7 @@ defmodule MajorityFinder.Results do
         %{new_question: %{id: id}},
         state
       ) do
+    if %{} != state.question, do: archive_results(state)
     new_question = GenServer.call(Questions, %{get_question: id})
     clean_results = Enum.map(new_question.answers, fn a -> %{a => 0} end)
     broadcast_question(new_question)
@@ -120,8 +129,18 @@ defmodule MajorityFinder.Results do
     new_state
   end
 
-  defp archive_results(%{results: results, question: %{question: question, id: id}, archived_results: archived_results} = state) do
+  defp archive_results(%{results: results, question: %{question: question, id: id}, archived_results: archived_results, gsheet_archive_pid: pid} = state) do
     new_archive = Map.put(archived_results, id, %{results: results, question: question})
+
+    time = DateTime.now("Etc/UTC") |> elem(1) |> to_string
+    stripped_results = for rs <- results, {a, v} <- rs do
+      [a,v]
+    end |> List.flatten
+
+    gsrow = [time, question]++stripped_results
+    IO.inspect(gsrow, label: "Writing Google Sheet Row")
+    GSS.Spreadsheet.append_row(pid, 1, gsrow)
+
     IO.inspect([new_archive, label: "RESULT_ARCHIVE"])
     %{state | results: [], question: %{}, archived_results: new_archive}
   end

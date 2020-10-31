@@ -3,8 +3,8 @@ defmodule MajorityFinder.User do
 
   defstruct validation_code: nil, id: nil, role: nil
 
-  @voter_codes ["0000","1mcf"]
-  @admin_codes ["9999"]
+  @voter_codes []
+  @admin_codes [System.get_env("ADMIN_LOGIN_CODE")]
   @refresh_period 120
 
   def get_user(%{user_id: user_id}) do

@@ -40,6 +40,7 @@ defmodule MajorityFinderWeb.Host do
   end
 
   def handle_info({Results, %{results: _r} = results}, state) do
+    IO.inspect(results, label: "MAH RESULTS")
     {:noreply, update(state, :results, fn _ -> results end)}
   end
 
@@ -107,10 +108,15 @@ defmodule MajorityFinderWeb.Host do
       <div class="host open-question question">
         <h3>Live results:</h3>
       </div>
+      <div>
+        <%= get_in(@results, [:question, :question]) %>
+      </div>
+      <div>
         <%= for resultSet <- @results.results,
           {answer, result} <- resultSet do %>
-        <div class="host open-question answers"><%= answer %>: <%= result %></div>
-      <% end %>
+          <div class="host open-question answers"><%= answer %>: <%= result %></div>
+        <% end %>
+      </div>
     </div>
     <div class="host metrics">
       <div class="host metrics online-users">Online users: <%= @online_voters %></div>
