@@ -115,9 +115,8 @@ defmodule MajorityFinder.Results do
 
   defp tally_vote(%{voter_id: voter_id, vote_cast: vote}, state) do
     new_results = Enum.map(state.results, fn x -> if Map.has_key?(x, vote), do: %{vote => x[vote] + 1}, else: x end)
-    # {_, new_state} = get_and_update_in(state, [:results, vote], &{&1, (&1 || 0) + 1})
-    # {_, new_state} = get_and_update_in(new_state, [:ballots, voter_id], &{&1, (&1 || []) ++ [vote]})
-    new_state = %{state | results: new_results}
+    {_, new_ballots} = Map.get_and_update(state.ballots, voter_id, fn current_value -> {current_value, (current_value || []) ++ [vote]} end)
+    new_state = %{state | results: new_results, ballots: new_ballots}
     new_state
   end
 
