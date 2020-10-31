@@ -3,40 +3,31 @@
   "answers": ["Yes", "No"]
 }, {
   "question": "This community is liberal.",
-  "answers": ["Yes", "No"],
-  "time_limit": 15
+  "answers": ["Yes", "No"]
 }, {
   "question": "This community is male.",
-  "answers": ["Yes", "No"],
-  "time_limit": 15
+  "answers": ["Yes", "No"]
 }, {
   "question": "This community is white.",
-  "answers": ["Yes", "No"],
-  "time_limit": 15
+  "answers": ["Yes", "No"]
 }, {
   "question": "This community is pro-choice.",
-  "answers": ["Yes", "No"],
-  "time_limit": 15
+  "answers": ["Yes", "No"]
 }, {
   "question": "This community believes in the death penalty.",
-  "answers": ["Yes", "No"],
-  "time_limit": 15
+  "answers": ["Yes", "No"]
 }, {
   "question": "This community believes God is real.",
-  "answers": ["Yes", "No"],
-  "time_limit": 15
+  "answers": ["Yes", "No"]
 }, {
   "question": "This community believes the Covid-19 Pandemic is real.",
-  "answers": ["Yes", "No"],
-  "time_limit": 15
+  "answers": ["Yes", "No"]
 }, {
   "question": "This community believes in absolute freedom of speech.",
-  "answers": ["Yes", "No"],
-  "time_limit": 15
+  "answers": ["Yes", "No"]
 }, {
   "question": "This community believes they can make a difference.",
-  "answers": ["Yes", "No"],
-  "time_limit": 15
+  "answers": ["Yes", "No"]
 }, {
   "question": "This community believes the result of the Scottish independence referendum of 2014 was a good thing.",
   "answers": ["Yes", "No"]

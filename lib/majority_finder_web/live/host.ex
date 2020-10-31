@@ -107,8 +107,9 @@ defmodule MajorityFinderWeb.Host do
       <div class="host open-question question">
         <h3>Live results:</h3>
       </div>
-      <%= for {value, result} <- @results.results do %>
-        <div class="host open-question answers"><%= value %>: <%= result %></div>
+        <%= for resultSet <- @results.results,
+          {answer, result} <- resultSet do %>
+        <div class="host open-question answers"><%= answer %>: <%= result %></div>
       <% end %>
     </div>
     <div class="host metrics">
