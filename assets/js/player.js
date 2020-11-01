@@ -8,9 +8,9 @@ import WowzaWebRTCPlay from './lib/WowzaWebRTCPlay.js';
 
 let state = {
   settings: {
-    playSdpURL: "wss://5f85d4bfe11f1.streamlock.net/webrtc-session.json",
-    playApplicationName: "majority2",
-    playStreamName: "themajority_opus"
+    playSdpURL: "wss://5f9cba1bc8aeb.streamlock.net/webrtc-session.json",
+    playApplicationName: "live",
+    playStreamName: "themajority_source"
   }
 };
 let statePrefix = 'play';

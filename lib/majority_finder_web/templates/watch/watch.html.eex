@@ -21,7 +21,6 @@
     <script src="https://cdn.jsdelivr.net/npm/js-cookie@2.2.1/src/js.cookie.js" integrity="sha256-P8jY+MCe6X2cjNSmF4rQvZIanL5VwUUT4MBnOMncjRU=" crossorigin="anonymous"></script>
     <script type="text/javascript" src="https://webrtchacks.github.io/adapter/adapter-latest.js"></script>
 
-
     <!-- Needed for /watch  TODO: Scope these better so they're not included in /vote -->
 <%#     <!-- Chromecast SDK -->
     <script type="text/javascript" src="//www.gstatic.com/cv/js/sender/v1/cast_sender.js?loadCastFramework=1"></script>
@@ -61,8 +60,15 @@ Comedy, and even Webinars, classes, and quizzes can make use of it.  If you're i
 on the front end 🙃), want to chat about functional programming, or just feel like it, drop me a line and let's chat!
 -->
     <%= render "b_public_header.html" %>
-  <div id="vimeo-player" style="padding:56.25% 0 0 0;position:relative;"><iframe id="vimeo-player-iframe" src="https://vimeo.com/event/420585/embed/6f0c858aed" frameborder="0" allow="autoplay; fullscreen" allowfullscreen style="position:absolute;top:0;left:0;width:100%;height:100%;"></iframe></div>
-
+    <%= case @player do %>
+      <% "webrtc" -> %>
+        <video id="player-video" width="100%" autoplay playsinline controls></video>
+        <div>
+          <button phx-click="video_player" value="legacy">Legacy Player (High Latency)</div>
+        </div>
+      <% _ -> %>
+        <div id="vimeo-player" style="padding:56.25% 0 0 0;position:relative;"><iframe id="vimeo-player-iframe" src="https://vimeo.com/event/420585/embed/6f0c858aed" frameborder="0" allow="autoplay; fullscreen" allowfullscreen style="position:absolute;top:0;left:0;width:100%;height:100%;"></iframe></div>
+    <% end %>
 
     <div><iframe scrolling="no" class="embeddedvote" src="/embeddedvote"></iframe></div>
   </body>

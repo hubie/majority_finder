@@ -211,6 +211,13 @@ class WowzaPeerConnectionPlay
             _this.peerConnection.addIceCandidate(new RTCIceCandidate(iceCandidates[index]));
           }
         }
+        const receivers = _this.peerConnection.getReceivers();
+
+        for (const receiver of receivers) {
+          console.log(receiver);
+          receiver.playoutDelayHint = 5;
+
+        }
       }
 
       if ('sendResponse'.localeCompare(msgCommand) == 0) {
