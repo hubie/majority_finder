@@ -28,6 +28,7 @@ defmodule MajorityFinder.User do
   end
 
   def get_user(%{validation_code: validation_code} = user, list_state) do
+    IO.inspect(:ets.lookup(:auth_codes, :"#{validation_code}"), label: "USER")
     case :ets.lookup(:auth_codes, :"#{validation_code}") do
       [{_, :admin}] ->
         %__MODULE__{validation_code: validation_code, id: validation_code, role: :admin}
@@ -74,7 +75,7 @@ defmodule MajorityFinder.User do
     end_row = start_row+max_rows
 
     {:ok, fetched_codes} = GSS.Spreadsheet.read_rows(pid, start_row, end_row, column_to: 1)
-    new_codes = fetched_codes |> List.flatten |> Enum.filter(& !is_nil(&1))
+    new_codes = fetched_codes |> List.flatten |> Enum.reject(& is_nil(&1) || &1 == "" )
 
     case Enum.count(new_codes) do
       0 ->
