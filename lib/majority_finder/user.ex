@@ -58,7 +58,7 @@ defmodule MajorityFinder.User do
     :ets.insert(:auth_codes, ac)
 
     {:ok, pid} = GSS.Spreadsheet.Supervisor.spreadsheet(System.get_env("VOTER_CODE_SHEET_ID"))
-    
+
     get_codes(pid)
     Process.exit(pid, :kill)
 

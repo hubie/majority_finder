@@ -59,7 +59,7 @@ in these COVID times.  It is my intention to take the my learnings and rewrite t
 Comedy, and even Webinars, classes, and quizzes can make use of it.  If you're interested in helping, (and I could obviously use some help
 on the front end 🙃), want to chat about functional programming, or just feel like it, drop me a line and let's chat!
 -->
-    <%= render "b_public_header.html" %>
+    <%= render MajorityFinderWeb.LayoutView, "b_public_header.html", %{} %>
     <%= case @player do %>
       <% "webrtc" -> %>
         <video id="player-video" width="100%" autoplay playsinline controls></video>

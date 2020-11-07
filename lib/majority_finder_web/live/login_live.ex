@@ -1,5 +1,6 @@
 defmodule MajorityFinderWeb.LoginLive do
   use MajorityFinderWeb, :live_view
+  alias MajorityFinderWeb.LayoutView
   import Phoenix.HTML.Form
   import MajorityFinderWeb.Live.Helper, only: [signing_salt: 0]
 
@@ -8,17 +9,31 @@ defmodule MajorityFinderWeb.LoginLive do
   @impl true
   def render(assigns) do
     ~L"""
+    <%= render LayoutView, "b_public_header.html", assigns %>
     <div>
       <%= form_for :user, "#", [phx_submit: :save, autocomplete: "off", autocorrect: "off", autocapitalize: "off", spellcheck: "false"], fn f -> %>
         <fieldset class="flex flex-col md:w-full">
 
           <div>
-            <label for="form_email">Enter your Access Code</label>
+            <label for="form_email">Enter your Access Code:</label>
             <%= text_input f, :validation_code, [class: "password-box text-white focus:border focus:border-b-0 rounded border", placeholder: "Access Code", aria_required: "true"] %>
           </div>
           <%= submit "Login", [class: "w-full text-white bg-shop-green uppercase font-bold text-lg p-2 rounded"] %>
         </fieldset>
       <% end %>
+    </div>
+    <div>
+      Your Access Code can be found:
+      <ul>
+        <li>In the streaming instructions email</li>
+        <li>In your Ticket Receipt email (as "Ticket Code")</li>
+        <li>On your ticket stub (if applicable)</li>
+      </ul>
+    </div>
+    <div>
+      <div>
+        <h2>Tickets and more information about The Majority can be found on our website at <a href="theatreb.org"><strong>theatreb.org</strong></a></h2>
+      </div>
     </div>
     """
   end
