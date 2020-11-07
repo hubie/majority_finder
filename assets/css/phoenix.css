@@ -24,7 +24,6 @@ pre{padding: 1em;}
 .container{
   margin: 0 auto;
   /*max-width: 80.0rem;*/
-  padding: 0 2.0rem;
   position: relative;
   width: 100%;
   height: 100%;
@@ -56,6 +55,10 @@ select {
 .b-logo img {
   width: 6rem;
   display: block;
+}
+
+.content-body {
+  padding: 2rem;
 }
 
 li {
@@ -184,13 +187,14 @@ li {
 }
 
 .embeddedvote {
+  padding-top: 2rem;
   border: 0;
-   height: 60rem;
-   left: 0;
-   overflow-y: hidden;
-   /*position: absolute;*/
-   top: 0;
-   width: 100%;
+  height: 60rem;
+  left: 0;
+  overflow-y: hidden;
+  /*position: absolute;*/
+  top: 0;
+  width: 100%;
 }
 
 .ellipsis-anim span {
@@ -263,6 +267,7 @@ body {
   color: #e3e3e3;
   min-height: 100%;
   height: 100%;
+  margin: 0px;
   /*overflow-y: hidden;*/
 }
 
@@ -278,7 +283,7 @@ html {
 
 /* Headers */
 header {
-  width: 100%;
+  width: 100vw;
   background: #202020;
   border-bottom: 1px solid #eaeaea;
   margin-bottom: 2rem;

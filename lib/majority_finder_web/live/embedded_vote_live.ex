@@ -41,7 +41,7 @@ defmodule MajorityFinderWeb.EmbeddedVoteLive do
           <% _ -> %>
             <div class="voteinstructions">
               <div class="voteinstructions title">
-                <i class="fas fa-vote-yea"></i>&nbsp;&nbsp;Register to vote!&nbsp;&nbsp;<i class="fas fa-vote-yea"></i>
+                Register to vote!&nbsp;&nbsp;<i class="fas fa-vote-yea"></i>
               </div>
               <div class="voteinstructions instructions">
                 It's easy!
@@ -51,6 +51,7 @@ defmodule MajorityFinderWeb.EmbeddedVoteLive do
                   <li> Enter your access code
                 </ol>
                 When it's time to vote, the question and choices will appear on the screen.  Then it's your turn!
+                <br/><br/>Whether you're watching by yourself or with your entire family, we encourage <em>everyone</em> watching to make their voice heard!
               </div>
               <br/>
               <div class="voteinstructions votehere">

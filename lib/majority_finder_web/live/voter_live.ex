@@ -83,7 +83,7 @@ defmodule MajorityFinderWeb.VoterLive do
 
   def render(assigns) do
     ~L"""
-    <div>
+    <div class="content-body">
       <h1>
       <%=
         case @show_mode do %>
