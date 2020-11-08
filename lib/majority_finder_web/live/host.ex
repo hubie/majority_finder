@@ -69,6 +69,11 @@ defmodule MajorityFinderWeb.Host do
     {:noreply, socket}
   end
 
+  def handle_event("save", %{"custom_message" => %{"message" => message}}, socket) do
+    Results.send_message(%{message: message})
+    {:noreply, socket}
+  end
+
   def handle_event("save", _, socket) do
     # no qustion selected
     {:noreply, socket}
@@ -93,6 +98,7 @@ defmodule MajorityFinderWeb.Host do
         <button class="host mode <%= if @show_mode == :preshow, do: selected_class %>" phx-click="showmode" phx-value-mode="preshow">Preshow</button>
         <button class="host mode <%= if @show_mode == :show, do: selected_class %>" phx-click="showmode" phx-value-mode="show">Show</button>
         <button class="host mode <%= if @show_mode == :postshow, do: selected_class %>" phx-click="showmode" phx-value-mode="postshow">Postshow</button>
+        <button class="host mode <%= if @show_mode == :message, do: selected_class %>" phx-click="showmode" phx-value-mode="message">Custom Message</button>
       </div>
       <div>
         <%= f = form_for :question_select, "#", [phx_change: :validate, phx_submit: :save] %>
@@ -121,6 +127,14 @@ defmodule MajorityFinderWeb.Host do
       </div>
       <div class="host metrics">
         <div class="host metrics online-users">Online users: <%= @online_voters %></div>
+      </div>
+      <div>
+      <%= m = form_for :custom_message, "#", [phx_change: :validate, phx_submit: :save] %>
+        <span>
+          <%= text_input m, :message, placeholder: "Custom Message" %>
+          <%= submit "Send Message" %>
+        </span>
+      </form>
       </div>
     </div>
     """

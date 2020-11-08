@@ -221,4 +221,12 @@ defmodule MajorityFinder.Results do
   def get_current_show_mode() do
     GenServer.call(__MODULE__, :get_current_show_mode)
   end
+
+  def send_message(%{message: message}) do
+    Phoenix.PubSub.broadcast(
+      MajorityFinder.PubSub,
+      @questionsTopic,
+      {__MODULE__, %{message: message}}
+    )
+  end
 end

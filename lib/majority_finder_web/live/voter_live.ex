@@ -21,7 +21,8 @@ defmodule MajorityFinderWeb.VoterLive do
     online_user_count: 0,
     session_id: nil,
     voter_state: :new,
-    show_mode: nil
+    show_mode: nil,
+    message: ""
   }
 
   def mount(params, %{"session_uuid" => key} = session, socket) do
@@ -56,6 +57,13 @@ defmodule MajorityFinderWeb.VoterLive do
   def handle_info({Results, %{show_mode: mode}}, state) do
     new_state = state
       |> update(:show_mode, fn _ -> mode end)
+
+    {:noreply, new_state}
+  end
+
+  def handle_info({Results, %{message: message}}, state) do
+    new_state = state
+      |> update(:message, fn _ -> message end)
 
     {:noreply, new_state}
   end
@@ -110,6 +118,8 @@ defmodule MajorityFinderWeb.VoterLive do
               We hope you enjoyed the show!
               <br/>To stay up to date with Theatre B, visit <a href="http://www.theatreb.org">theatreb.org</a>.
               <br/>Visit us on Facebook at <a href="https://www.facebook.com/TheatreBFargo">@TheatreBFargo</a>
+          <%= :message -> %>
+              <%= @message %>
          <%= _ ->  %>
           <%= "Unknown show state #{@show_mode}" %>
         <% end %>
