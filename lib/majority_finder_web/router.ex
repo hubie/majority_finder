@@ -11,7 +11,7 @@ defmodule MajorityFinderWeb.Router do
     plug :protect_from_forgery
     plug :put_secure_browser_headers
     plug :validate_session
-    plug CORSPlug, origin: MajorityFinderWeb.Endpoint.config(:allowed_origins)
+    plug CORSPlug, origin: System.get_env("ALLOWED_ORIGINS", "localhost,127.0.0.1") |> String.split(",")
   end
 
   pipeline :browser do
@@ -22,7 +22,7 @@ defmodule MajorityFinderWeb.Router do
     plug :protect_from_forgery
     plug :put_secure_browser_headers
     plug :validate_session
-    plug CORSPlug, origin: MajorityFinderWeb.Endpoint.config(:allowed_origins)
+    plug CORSPlug, origin: System.get_env("ALLOWED_ORIGINS", "localhost,127.0.0.1") |> String.split(",")
   end
 
   pipeline :voter do
