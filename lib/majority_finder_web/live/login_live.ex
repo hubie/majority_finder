@@ -9,7 +9,7 @@ defmodule MajorityFinderWeb.LoginLive do
   @impl true
   def render(assigns) do
     ~L"""
-    <%= render LayoutView, "b_public_header.html", assigns %>
+    <%= render LayoutView, "public_header.html", assigns %>
     <div>
       <%= form_for :user, "#", [phx_submit: :save, autocomplete: "off", autocorrect: "off", autocapitalize: "off", spellcheck: "false"], fn f -> %>
         <fieldset class="flex flex-col md:w-full">
@@ -25,15 +25,9 @@ defmodule MajorityFinderWeb.LoginLive do
     <div>
       Your Access Code can be found:
       <ul>
-        <li>In the streaming instructions email</li>
-        <li>In your Ticket Receipt email (as "Ticket Code")</li>
-        <li>On your ticket stub (if applicable)</li>
+        <li>In the Google Calendar invite</li>
+        <li>In an email you received</li>
       </ul>
-    </div>
-    <div>
-      <div>
-        <h2>Tickets and more information about The Majority can be found on our website at <a href="theatreb.org"><strong>theatreb.org</strong></a></h2>
-      </div>
     </div>
     """
   end

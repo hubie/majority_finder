@@ -1,0 +1,12 @@
+<header>
+  <section class="container">
+    <div>
+    </div>
+    <a href="https://bushelpowered.com/" class="logo">
+      <img src="/images/header_logo.png" alt="Logo"/>
+    </a>
+    <div class="hero title">
+      The 2020 Slackie Awards
+    </div>
+  </section>
+</header>

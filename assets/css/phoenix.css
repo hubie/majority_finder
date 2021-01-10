@@ -47,6 +47,23 @@ select {
   background: #ffffff;
 }
 
+.hero.title {
+  font-size: 6rem;
+  color: rgb(242,188,35);
+  font-family: Montserrat, sans-serif;
+  font-weight: 800;
+}
+
+.logo {
+  /*min-width: 300px;*/
+  margin: 1rem;
+  display: block;
+}
+.logo img {
+  height: 6rem;
+  display: block;
+}
+
 .b-logo {
   /*min-width: 300px;*/
   margin: 1rem;
