@@ -31,7 +31,6 @@ defmodule MajorityFinderWeb.EmbeddedVoteLive do
   end
 
   def handle_info({Results, %{message: message}}, state) do
-    IO.inspect(["NEW MESSAGE", message])
     new_state = state
       |> update(:message, fn _ -> message end)
 
@@ -42,7 +41,6 @@ defmodule MajorityFinderWeb.EmbeddedVoteLive do
   def mount(params, %{"session_uuid" => key} = _session, socket) do
     Phoenix.PubSub.subscribe(MajorityFinder.PubSub, @showTopic)
     %{show_mode: show_mode, message: message} = GenServer.call(Results, :get_show_state)
-    IO.inspect(["LOL", show_mode, message])
 
     {:ok, assign(socket, %{@initial_store |
       key: key,
