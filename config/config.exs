@@ -13,8 +13,7 @@ config :majority_finder, MajorityFinderWeb.Endpoint,
   secret_key_base: System.get_env("SECRET_KEY_BASE"),
   render_errors: [view: MajorityFinderWeb.ErrorView, accepts: ~w(html json), layout: false],
   pubsub_server: MajorityFinder.PubSub,
-  allowed_origins: System.get_env("ALLOWED_ORIGINS", "") |> String.split(","),
-  check_origin: System.get_env("CHECK_ORIGINS", "localhost,127.0.0.1") |> String.split(","),
+  allowed_origins: System.get_env("ALLOWED_ORIGINS", "localhost,127.0.0.1") |> String.split(","),
   live_view: [signing_salt: System.get_env("LIVEVIEW_SIGNING_SALT")]
 
 # Configures Elixir's Logger

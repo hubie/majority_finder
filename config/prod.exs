@@ -13,7 +13,7 @@ config :majority_finder, MajorityFinderWeb.Endpoint,
   url: [host: "slackies.live"],
   cache_static_manifest: "priv/static/cache_manifest.json",
   force_ssl: [rewrite_on: [:x_forwarded_proto]],
-  check_origin: System.get_env("CHECK_ORIGINS", "localhost,127.0.0.1") |> String.split(","),
+  check_origin: System.get_env("CHECK_ORIGINS", "localhost,127.0.0.1") |> String.split(",")
 
 # Do not print debug messages in production
 config :logger, level: :info
