@@ -14,7 +14,8 @@ defmodule MajorityFinderWeb.Host do
     questions: [],
     results: nil,
     online_voters: 0,
-    show_mode: nil
+    show_mode: nil,
+    message: nil,
   }
 
   def subscribe do
@@ -27,9 +28,12 @@ defmodule MajorityFinderWeb.Host do
   def mount(_args, %{"user_id" => _user_id} = _session, socket) do
     if connected?(socket), do: subscribe()
 
+    %{show_mode: show_mode, message: message} = GenServer.call(Results, :get_show_state)
+
     state = %{@initial_store | results: Results.get_current_results(),
                                online_voters: Results.get_current_voter_count(),
-                               show_mode: Results.get_current_show_mode(),
+                               show_mode: show_mode,
+                               message: message,
                                questions: GenServer.call(Questions, :get_questions)
                              }
     {:ok, assign(socket, state)}
@@ -40,7 +44,6 @@ defmodule MajorityFinderWeb.Host do
   end
 
   def handle_info({Results, %{results: _r} = results}, state) do
-    IO.inspect(results, label: "MAH RESULTS")
     {:noreply, update(state, :results, fn _ -> results end)}
   end
 
@@ -49,6 +52,10 @@ defmodule MajorityFinderWeb.Host do
       |> update(:show_mode, fn _ -> mode end)
 
     {:noreply, new_state}
+  end
+
+  def handle_info({Results, %{message: _}}, state) do
+    {:noreply, state}
   end
 
   def handle_event("validate", %{"question_select" => _selected_index}, socket) do
@@ -71,7 +78,7 @@ defmodule MajorityFinderWeb.Host do
 
   def handle_event("save", %{"custom_message" => %{"message" => message}}, socket) do
     Results.send_message(%{message: message})
-    {:noreply, socket}
+    {:noreply, assign(socket, changeset: %{message: message})}
   end
 
   def handle_event("save", _, socket) do
@@ -98,7 +105,6 @@ defmodule MajorityFinderWeb.Host do
         <button class="host mode <%= if @show_mode == :preshow, do: selected_class %>" phx-click="showmode" phx-value-mode="preshow">Preshow</button>
         <button class="host mode <%= if @show_mode == :show, do: selected_class %>" phx-click="showmode" phx-value-mode="show">Show</button>
         <button class="host mode <%= if @show_mode == :postshow, do: selected_class %>" phx-click="showmode" phx-value-mode="postshow">Postshow</button>
-        <button class="host mode <%= if @show_mode == :message, do: selected_class %>" phx-click="showmode" phx-value-mode="message">Custom Message</button>
       </div>
       <div>
         <%= f = form_for :question_select, "#", [phx_change: :validate, phx_submit: :save] %>
@@ -129,9 +135,9 @@ defmodule MajorityFinderWeb.Host do
         <div class="host metrics online-users">Online users: <%= @online_voters %></div>
       </div>
       <div>
-      <%= m = form_for :custom_message, "#", [phx_change: :validate, phx_submit: :save] %>
+      <%= m = form_for :custom_message, "#", [phx_click: :validate, phx_submit: :save] %>
         <span>
-          <%= text_input m, :message, placeholder: "Custom Message" %>
+          <%= text_input m, :message, [placeholder: "Custom Message", id: :custom_message] %>
           <%= submit "Send Message" %>
         </span>
       </form>

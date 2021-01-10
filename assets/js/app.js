@@ -105,10 +105,18 @@ Hooks.ResultsChart = {
     });
 
     this.handleEvent("new_results", ({data}) => {
-        resultsChart.data.labels = Object.keys(data)
-        resultsChart.data.datasets.forEach((dataset) => {
-          dataset.data = Object.values(data);
-        });
+        console.log(data)
+        // resultsChart.data.labels = Object.keys(data)
+        var labels = []
+        var values = []
+        data.forEach((lineitem) => {
+            labels.push(Object.keys(lineitem))
+            values.push(Object.values(lineitem))
+        })
+
+        resultsChart.data.datasets[0].data = [].concat.apply([], values)
+        resultsChart.data.labels = [].concat.apply([], labels)
+
         resultsChart.update();
       }
     )

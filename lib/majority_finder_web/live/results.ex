@@ -48,7 +48,7 @@ defmodule MajorityFinderWeb.Results do
   def render(assigns) do
     case assigns.state.params do
       %{"view" => "headline"} ->
-        Phoenix.View.render(MajorityFinderWeb.Results.HeadlineLive, "headline_live.html", assigns)
+        Phoenix.View.render(MajorityFinderWeb.Results.Results, "headline_live.html", assigns)
       _ ->
         ~L"""
         <div class="resultscontainer">

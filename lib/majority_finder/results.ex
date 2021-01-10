@@ -9,6 +9,7 @@ defmodule MajorityFinder.Results do
     question: %{},
     voter_count: nil,
     show_mode: :show,
+    message: nil,
     archived_results: %{},
     gsheet_archive_pid: nil
   }
@@ -66,7 +67,8 @@ defmodule MajorityFinder.Results do
 
   @impl true
   def handle_cast(%{set_show_mode: mode}, state) do
-    new_state = %{state | show_mode: mode}
+    broadcast_message(%{message: nil})
+    new_state = %{state | show_mode: mode, message: nil}
     broadcast_show_mode(%{show_mode: mode})
     {:noreply, new_state}
   end
@@ -104,9 +106,10 @@ defmodule MajorityFinder.Results do
   end
 
   @impl true
-  def handle_call(:get_current_show_mode, _from, state) do
-    {:reply, state.show_mode, state}
+  def handle_call(:get_show_state, _from, state) do
+    {:reply, %{show_mode: state.show_mode, message: state.message}, state}
   end
+
 
   @impl true
   def handle_call(:get_current_question, _from, state) do
@@ -116,6 +119,20 @@ defmodule MajorityFinder.Results do
   @impl true
   def handle_call(:get_current_voter_count, _from, state) do
     {:reply, state.voter_count, state}
+  end
+
+  @impl true
+  def handle_cast(%{set_message: message}, state) do
+    broadcast_message(%{message: message})
+    {:noreply, %{state | message: message}}
+  end
+
+  defp broadcast_message(%{message: message}) do
+    Phoenix.PubSub.broadcast(
+      MajorityFinder.PubSub,
+      @showTopic,
+      {__MODULE__, %{message: message}}
+    )
   end
 
   defp get_vote_count_for_voter(voter_id, state) do
@@ -218,15 +235,7 @@ defmodule MajorityFinder.Results do
     GenServer.cast(__MODULE__, %{set_show_mode: mode})
   end
 
-  def get_current_show_mode() do
-    GenServer.call(__MODULE__, :get_current_show_mode)
-  end
-
   def send_message(%{message: message}) do
-    Phoenix.PubSub.broadcast(
-      MajorityFinder.PubSub,
-      @questionsTopic,
-      {__MODULE__, %{message: message}}
-    )
+    GenServer.cast(__MODULE__, %{set_message: message})
   end
 end

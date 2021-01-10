@@ -36,12 +36,15 @@ defmodule MajorityFinderWeb.VoterLive do
     )
     embed = Access.get(params, "embed", "false") == "true"
 
+    %{show_mode: show_mode, message: message} = GenServer.call(Results, :get_show_state)
+
     {:ok, assign(socket, %{@initial_store |
       embed: embed,
       question: Results.get_current_question(),
       session_id: key,
       voter_state: Results.get_voter_state(key),
-      show_mode: Results.get_current_show_mode
+      show_mode: show_mode,
+      message: message
       })
     }
   end
@@ -90,41 +93,7 @@ defmodule MajorityFinderWeb.VoterLive do
   end
 
   def render(assigns) do
-    ~L"""
-    <div class="content-body">
-      <h1>
-      <%=
-        case @show_mode do %>
-        <%= :preshow -> %>
-          <h2>You're in the right place!</h2>
-          <p/>
-          The Majority is an interactive show.  You will be asked for your thoughts on a number of topics.
-          When it's time to place your vote, the proposition and choices will automatically appear – right on this page!
-        <%= :show -> %>
-          <%= case @voter_state do %>
-            <%= :voting_closed -> %>
-                  The proposition is<span class="ellipsis-anim"><span>.</span><span>.</span><span>.</span>
-            <%= :voted -> %>
-                Your vote has been counted!
-                <br/>
-                <i class="fas fa-vote-yea vote-counted"></i>
-            <%= :new_question -> %>
-              <%= question = @question
-                live_component(@socket, MajorityFinderWeb.Components.QuestionComponent, question: question) %>
-              <%= _ -> %>
-                <%= "Unknown state: #{@voter_state}" %>
-            <% end %>
-          <%= :postshow -> %>
-              We hope you enjoyed the show!
-              <br/>To stay up to date with Theatre B, visit <a href="http://www.theatreb.org">theatreb.org</a>.
-              <br/>Visit us on Facebook at <a href="https://www.facebook.com/TheatreBFargo">@TheatreBFargo</a>
-          <%= :message -> %>
-              <%= @message %>
-         <%= _ ->  %>
-          <%= "Unknown show state #{@show_mode}" %>
-        <% end %>
-    </div>
-    """
+    Phoenix.View.render(MajorityFinderWeb.Voter.VoterLive, "vote_template.html", assigns)
   end
 
 end

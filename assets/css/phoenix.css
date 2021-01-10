@@ -57,6 +57,10 @@ select {
   display: block;
 }
 
+.message-text {
+  font-style: italic;
+}
+
 .content-body {
   padding: 2rem;
 }

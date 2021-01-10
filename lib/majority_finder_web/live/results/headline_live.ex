@@ -1,4 +1,4 @@
-defmodule MajorityFinderWeb.Results.HeadlineLive do
+defmodule MajorityFinderWeb.Results.Results do
   use MajorityFinderWeb, :view
 
 end
