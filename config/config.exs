@@ -13,7 +13,8 @@ config :majority_finder, MajorityFinderWeb.Endpoint,
   secret_key_base: System.get_env("SECRET_KEY_BASE"),
   render_errors: [view: MajorityFinderWeb.ErrorView, accepts: ~w(html json), layout: false],
   pubsub_server: MajorityFinder.PubSub,
-  live_view: [signing_salt: System.get_env("LIVEVIEW_SIGNING_SALT")]
+  live_view: [signing_salt: System.get_env("LIVEVIEW_SIGNING_SALT")],
+  default_embedded_vote_mode: :vote
 
 # Configures Elixir's Logger
 config :logger, :console,

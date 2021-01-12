@@ -33,12 +33,12 @@ defmodule MajorityFinder.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
-      {:phoenix, "~> 1.5.6"},
-      {:phoenix_live_view, "~> 0.14.7"},
+      {:phoenix, "~> 1.5.7"},
+      {:phoenix_live_view, "~> 0.15.3"},
       {:floki, ">= 0.0.0", only: :test},
       {:phoenix_html, "~> 2.11"},
       {:phoenix_live_reload, "~> 1.2", only: :dev},
-      {:phoenix_live_dashboard, "~> 0.2.7"},
+      {:phoenix_live_dashboard, "~> 0.4"},
       {:telemetry_metrics, "~> 0.5"},
       {:telemetry_poller, "~> 0.5"},
       {:gettext, "~> 0.11"},

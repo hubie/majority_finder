@@ -5,17 +5,30 @@ defmodule MajorityFinderWeb.EmbeddedVoteLive do
 
   @initial_store %{
     key: nil,
-    vote_here: :instructions,
+    embedded_mode: nil,
     show_mode: nil,
     message: nil,
   }
   @showTopic "showControl"
 
+  def mount(params, %{"session_uuid" => key} = _session, socket) do
+    Phoenix.PubSub.subscribe(MajorityFinder.PubSub, @showTopic)
+    %{show_mode: show_mode, message: message} = GenServer.call(Results, :get_show_state)
+
+    {:ok, assign(socket, %{@initial_store |
+      key: key,
+      show_mode: show_mode,
+      message: message,
+      embedded_mode: Application.get_env(:majority_finder, MajorityFinderWeb.Endpoint, :instructions)[:default_embedded_vote_mode]
+      })
+    }
+  end
+
   def handle_event("voteHere", %{"value" => voteType} = _value, socket) do
     new_socket = socket
-      |> update(:vote_here, fn _ ->
+      |> update(:embedded_mode, fn _ ->
         case voteType do
-          "true" -> true
+          "voteHere" -> :vote
           "close" -> :close
           _ -> :instructions
       end end)
@@ -37,20 +50,9 @@ defmodule MajorityFinderWeb.EmbeddedVoteLive do
     {:noreply, new_state}
   end
 
-
-  def mount(params, %{"session_uuid" => key} = _session, socket) do
-    Phoenix.PubSub.subscribe(MajorityFinder.PubSub, @showTopic)
-    %{show_mode: show_mode, message: message} = GenServer.call(Results, :get_show_state)
-
-    {:ok, assign(socket, %{@initial_store |
-      key: key,
-      show_mode: show_mode,
-      message: message
-      })
-    }
-  end
-
   def render(assigns) do
-    Phoenix.View.render(MajorityFinderWeb.Voter.VoterLive, "embedded_vote_instructions.html", assigns)
+    ~L"""
+        <%= live_render(@socket, MajorityFinderWeb.VoterLive, id: "vote_panel", embedded_mode: true) %>
+      """
   end
 end

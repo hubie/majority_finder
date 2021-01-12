@@ -1,5 +1,5 @@
 defmodule MajorityFinderWeb.VoterLive do
-  use Phoenix.LiveView
+  use Phoenix.LiveView, template: {MajorityFinderWeb.LayoutView, "embedded.html"}
 
   alias MajorityFinder.Presence
   alias MajorityFinder.Results
@@ -34,7 +34,10 @@ defmodule MajorityFinderWeb.VoterLive do
       socket.id,
       %{}
     )
-    embed = Access.get(params, "embed", "false") == "true"
+    embed = case params do
+      :not_mounted_at_router -> "true"
+      _ -> "false"
+    end
 
     %{show_mode: show_mode, message: message} = GenServer.call(Results, :get_show_state)
 
@@ -93,7 +96,45 @@ defmodule MajorityFinderWeb.VoterLive do
   end
 
   def render(assigns) do
-    Phoenix.View.render(MajorityFinderWeb.Voter.VoterLive, "vote_template.html", assigns)
-  end
+    ~L"""
+    <%= if @message != nil do %>
+      <div class="message"><%= @message %></div>
+    <% end %>
 
+    <h1>
+    <div class="voting">
+      <%= case @show_mode do %>
+        <%= :preshow -> %>
+          <div class="preshow">
+            <h2>2020 Slackies Voting</h2>
+            <p/>
+            Voting Categories will be displayed here.
+            <br/>
+            * Elevator Music Playing *
+            <p/>
+          </div>
+        <%= :show -> %>
+          <%= case @voter_state do %>
+            <%= :voting_closed -> %>
+                  * Elevator Music<span class="ellipsis-anim"><span>.</span><span>.</span><span>.</span> *
+            <%= :voted -> %>
+                <h2>You Voted!</h2>
+                <p/>
+                Tallying Votes
+                <br/>
+                * Suspenseful Music Playing *
+            <%= :new_question -> %>
+              <%= question = @question
+                live_component(@socket, MajorityFinderWeb.Components.QuestionComponent, question: question) %>
+              <%= _ -> %>
+                <%= "Unknown state: #{@voter_state}" %>
+            <% end %>
+          <%= :postshow -> %>
+              We hope you enjoyed the show!
+         <%= _ ->  %>
+          <%= "Unknown show state #{inspect(@show_mode)}" %>
+        <% end %>
+      </div>
+    """
+  end
 end

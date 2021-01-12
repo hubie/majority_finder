@@ -9,25 +9,21 @@ defmodule MajorityFinderWeb.LoginLive do
   @impl true
   def render(assigns) do
     ~L"""
-    <%= render LayoutView, "public_header.html", assigns %>
-    <div>
-      <%= form_for :user, "#", [phx_submit: :save, autocomplete: "off", autocorrect: "off", autocapitalize: "off", spellcheck: "false"], fn f -> %>
-        <fieldset class="flex flex-col md:w-full">
+        <div class="login header">
+          Welcome to the Slackies
+        </div>
+        <div class="login-box-container">
+          <%= form_for :user, "#", [phx_submit: :save, autocomplete: "off", autocorrect: "off", autocapitalize: "off", spellcheck: "false"], fn f -> %>
+            <fieldset class="flex flex-col md:w-full">
 
-          <div>
-            <label for="form_email">Enter your Access Code:</label>
-            <%= text_input f, :validation_code, [class: "password-box text-white focus:border focus:border-b-0 rounded border", placeholder: "Access Code", aria_required: "true"] %>
-          </div>
-          <%= submit "Login", [class: "w-full text-white bg-shop-green uppercase font-bold text-lg p-2 rounded"] %>
-        </fieldset>
-      <% end %>
-    </div>
-    <div>
-      Your Access Code can be found:
-      <ul>
-        <li>In the Google Calendar invite</li>
-        <li>In an email you received</li>
-      </ul>
+              <div>
+                <label class="login access-code-label" for="form_email">Enter Access Code:</label>
+                <%= text_input f, :validation_code, [class: "login password-box focus:border focus:border-b-0 rounded border", placeholder: "Access Code", aria_required: "true"] %>
+                <%= submit "Submit" %>
+              </div>
+            </fieldset>
+          <% end %>
+        </div>
     </div>
     """
   end

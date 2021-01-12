@@ -1,5 +1,3 @@
-<%= render MajorityFinderWeb.LayoutView, "public_header.html", %{} %>
-<div class="content-body">
   <%= case @player do %>
     <% "webrtc" -> %>
       <video id="player-video" width="100%" autoplay playsinline controls></video>
@@ -7,8 +5,16 @@
         <button phx-click="video_player" value="legacy">Legacy Player (High Latency)</button>
       </div>
     <% _ -> %>
-      <div id="vimeo-player" style="padding:56.25% 0 0 0;position:relative;"><iframe id="vimeo-player-iframe" src="https://vimeo.com/event/420585/embed/6f0c858aed" frameborder="0" allow="autoplay; fullscreen" allowfullscreen style="position:absolute;top:0;left:0;width:100%;height:100%;"></iframe></div>
+    <script src="https://player.live-video.net/1.2.0/amazon-ivs-player.min.js"></script>
+    <video id="video-player" style="width:100%;height:100%;" playsinline autoplay muted controls></video>
+    <script>
+      if (IVSPlayer.isPlayerSupported) {
+        const player = IVSPlayer.create();
+        player.attachHTMLVideoElement(document.getElementById('video-player'));
+        player.load("https://db56b4e6eb14.us-west-2.playback.live-video.net/api/video/v1/us-west-2.782786320381.channel.kyYKOxpFsX9D.m3u8");
+        player.play();
+      }
+    </script>
   <% end %>
 
   <div><iframe scrolling="no" class="embeddedvote" src="/embeddedvote"></iframe></div>
-</div>

@@ -1,0 +1,39 @@
+      <div>
+        <%= if @message != nil do %>
+            <div class="message-text">
+              <h1><%= @message or "" %><h1>
+            </div>
+        <% end %>
+        <%= case @embedded_mode do %>
+          <% :vote -> %>
+            <div class="votepanel">
+              <iframe class="embeddedvote" src="/vote?embed=true">
+            </div>
+          <% :close -> %>
+            <button phx-click="voteHere" value="instructions" class="voteinstructions show">Show Voting Instructions</button>
+          <% # instructions, default %>
+          <% _ -> %>
+            <div class="voteinstructions">
+              <div class="voteinstructions title">
+                Register to vote!&nbsp;&nbsp;<i class="fas fa-vote-yea"></i>
+              </div>
+              <div class="voteinstructions instructions">
+                It's easy!
+                <ol>
+                  <li> Grab a smart phone, tablet, or another computer
+                  <li> Go to <a target="_parent" href="/vote"><%= MajorityFinderWeb.Endpoint.url() %>/vote</a>
+                  <li> Enter your access code
+                </ol>
+                When it's time to vote, the question and choices will appear on the screen.  Then it's your turn!
+                <br/><br/>Whether you're watching by yourself or with your entire family, we encourage <em>everyone</em> watching to make their voice heard!
+              </div>
+              <br/>
+              <div class="voteinstructions votehere">
+                If you don't have access to another device, you can also <a href="#" phx-click="voteHere" phx-value-value="voteHere" class="voteinstructions votehere link">Vote by clicking Here</a>
+              </div>
+              <div class="voteinstructions close">
+                <button phx-click="voteHere" value="close" class="voteinstructions close">Close</button>
+              </div>
+            </div>
+        <% end %>
+      </div>
