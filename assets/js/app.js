@@ -54,7 +54,7 @@ Hooks.ResultsChart = {
   mounted() {
 
     var ctx = document.getElementById('resultsChart');
-    Chart.defaults.global.defaultFontFamily='arial-black'
+    Chart.defaults.global.defaultFontFamily='Montserrat, sans-serif'
     var resultsChart = new Chart(ctx, {
         type: 'bar',
         data: {
@@ -100,6 +100,7 @@ Hooks.ResultsChart = {
                   ticks: {
                     fontSize: 30,
                     fontColor: 'rgb(242,188,35)',
+                    fontStyle: 'bold',
                     callback: function(label, index, labels) {
                                 if (/\s/.test(label)) {
                                     return label.split(" ");
