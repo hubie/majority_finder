@@ -42,12 +42,12 @@ defmodule MajorityFinderWeb.Router do
 
     live "/login", LoginLive, :index
 
+    live("/results", Results)
+    live("/results/:view", Results)
   end
 
   scope "/", MajorityFinderWeb do
     pipe_through [:livebrowser, :admin]
-    live("/results", Results)
-    live("/results/:view", Results)
     live("/host", Host)
   end
 
