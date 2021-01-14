@@ -29,16 +29,16 @@
 
       <%# <iframe id="streamshark-videopanel" style="width:100%" onload="iframeLoaded()" src="https://play.streamshark.io/r/e/crrzqgkwy/test-transcode-gvyw3c/embed" frameborder="0" allow="autoplay" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen > </iframe>       %>
     <% _ -> %>
-    <script src="https://player.live-video.net/1.2.0/amazon-ivs-player.min.js"></script>
-    <video id="video-player" style="width:100%;height:100%;" playsinline autoplay muted controls></video>
-    <script>
-      if (IVSPlayer.isPlayerSupported) {
-        const player = IVSPlayer.create();
-        player.attachHTMLVideoElement(document.getElementById('video-player'));
-        player.load("https://db56b4e6eb14.us-west-2.playback.live-video.net/api/video/v1/us-west-2.782786320381.channel.kyYKOxpFsX9D.m3u8");
-        player.play();
-      }
-    </script>
-  <% end %>
+      <script src="https://player.live-video.net/1.2.0/amazon-ivs-player.min.js"></script>
+      <video id="video-player" style="width:100%;height:100%;" playsinline autoplay muted controls></video>
+      <script>
+        if (IVSPlayer.isPlayerSupported) {
+          const player = IVSPlayer.create();
+          player.attachHTMLVideoElement(document.getElementById('video-player'));
+          player.load("https://db56b4e6eb14.us-west-2.playback.live-video.net/api/video/v1/us-west-2.782786320381.channel.kyYKOxpFsX9D.m3u8");
+          player.play();
+        }
+      </script>
+    <% end %>
 
   <div><iframe scrolling="no" class="embeddedvote" src="/embeddedvote"></iframe></div>
