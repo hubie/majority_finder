@@ -7,7 +7,27 @@
         <button phx-click="video_player" value="legacy">Legacy Player (High Latency)</button>
       </div>
     <% "streamshark" -> %>
-      <iframe width="1140" height="360" src="https://play.streamshark.io/r/e/crrzqgkwy/test-22xtj8/embedComment" frameborder="0" allow="autoplay" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen > </iframe>
+      <script type="text/javascript">
+        function resizeVideopanel() {
+            var iFrameID = document.getElementById('streamshark-videopanel');
+            if(iFrameID) {
+                  var width = iFrameID.clientWidth
+                  if(width < 768)  {
+                    iFrameID.style.height = ((9/16)*width+400) + 'px';
+                  } else {
+                    iFrameID.style.height = (9/16)*(width*(3/4)) + 'px';
+                  }
+            }
+        }
+        window.addEventListener('resize', resizeVideopanel)
+
+        function iframeLoaded() {
+          resizeVideopanel()
+        }
+      </script>
+      <iframe id="streamshark-videopanel" style="width:100%" onload="iframeLoaded()"  src="<%= Application.get_env(:majority_finder, MajorityFinderWeb.Endpoint)[:streamshark_stream_url] %>/embedComment" frameborder="0" allow="autoplay" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen > </iframe>
+
+      <%# <iframe id="streamshark-videopanel" style="width:100%" onload="iframeLoaded()" src="https://play.streamshark.io/r/e/crrzqgkwy/test-transcode-gvyw3c/embed" frameborder="0" allow="autoplay" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen > </iframe>       %>
     <% _ -> %>
     <script src="https://player.live-video.net/1.2.0/amazon-ivs-player.min.js"></script>
     <video id="video-player" style="width:100%;height:100%;" playsinline autoplay muted controls></video>

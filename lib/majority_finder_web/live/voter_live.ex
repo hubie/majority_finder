@@ -110,19 +110,19 @@ defmodule MajorityFinderWeb.VoterLive do
             <p/>
             Voting Categories will be displayed here.
             <br/>
-            * Elevator Music Playing *
+            *&nbsp;Elevator Music Playing&nbsp;*
             <p/>
           </div>
         <%= :show -> %>
           <%= case @voter_state do %>
             <%= :voting_closed -> %>
-                  * Elevator Music<span class="ellipsis-anim"><span>.</span><span>.</span><span>.</span> *
+                  *&nbsp;Elevator Music<span class="ellipsis-anim"><span>.</span><span>.</span><span>.</span>&nbsp;*
             <%= :voted -> %>
                 <h2>You Voted!</h2>
                 <p/>
                 Tallying Votes
                 <br/>
-                * Suspenseful Music Playing *
+                *&nbsp;Suspenseful Music Playing&nbsp;*
             <%= :new_question -> %>
               <%= question = @question
                 live_component(@socket, MajorityFinderWeb.Components.QuestionComponent, question: question) %>

@@ -14,7 +14,9 @@ config :majority_finder, MajorityFinderWeb.Endpoint,
   render_errors: [view: MajorityFinderWeb.ErrorView, accepts: ~w(html json), layout: false],
   pubsub_server: MajorityFinder.PubSub,
   live_view: [signing_salt: System.get_env("LIVEVIEW_SIGNING_SALT")],
-  default_embedded_vote_mode: :vote
+  default_embedded_vote_mode: :vote,
+  default_video_provider: System.get_env("DEFAULT_VIDEO_PROVIDER", "streamshark"),
+  streamshark_stream_url: System.get_env("STREAMSHARK_STREAM_URL")
 
 # Configures Elixir's Logger
 config :logger, :console,
