@@ -66,6 +66,17 @@ defmodule MajorityFinderWeb.Router do
     get "/watch", WatchController, :index
   end
 
+  scope "/", MajorityFinderWeb do
+    pipe_through [:api]
+    post "/stats", StatsController, :update
+  end
+
+  scope "/", MajorityFinderWeb do
+    pipe_through [:livebrowser]
+
+    live "/stats", StatsLive, :index
+  end
+
   # Other scopes may use custom stacks.
   # scope "/api", MajorityFinderWeb do
   #   pipe_through :api

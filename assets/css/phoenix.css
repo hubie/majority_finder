@@ -330,7 +330,7 @@ input, select, textarea {
 }
 
 body:not(.embedded) {
-  background-image: url("/images/glitter_bg.jpg");
+  /*background-image: url("/images/glitter_bg.jpg");*/
   background-color: #000000;
   color: #e3e3e3;
   min-height: 100%;
